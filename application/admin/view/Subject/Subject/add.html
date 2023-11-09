@@ -1,0 +1,66 @@
+<form class="form-horizontal form-ajax" role="form" data-toggle="validator" method="POST">
+    <!-- 课程分类 -->
+    <div class="form-group">
+        <label for="cateid" class="control-label col-xs-12 col-sm-2">{:__('Cateid')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            {$catelist}
+        </div>
+    </div>
+
+    <!-- 课程名称 -->
+    <div class="form-group">
+        <label for="title" class="control-label col-xs-12 col-sm-2">{:__('Titles')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="title" data-rule="required" class="form-control" name="row[title]" placeholder="{:__('Titles')}"
+                type="text" value="">
+        </div>
+    </div>
+
+    <!-- 课程价格 -->
+    <div class="form-group">
+        <label for="price" class="control-label col-xs-12 col-sm-2">{:__('Price')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="price" data-rule="required;" class="form-control" name="row[price]" placeholder="{:__('Price')}"
+                type="text" value="">
+        </div>
+    </div>
+
+    <!-- 课程描述 -->
+    <div class="form-group">
+        <label for="content" class="control-label col-xs-12 col-sm-2">{:__('Content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea class="form-control editor" id="content" name="row[content]"></textarea>
+        </div>
+    </div>
+
+    <!-- 课程图片 -->
+    <div class="form-group">
+        <label for="thumbs" class="control-label col-xs-12 col-sm-2">{:__('Thumbs')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <!-- 上传路径 -->
+                <input id="thumbs" class="form-control" size="50" name="row[thumbs]" type="text" readonly />
+
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-thumbs" class="btn btn-danger faupload"
+                            data-input-id="thumbs" data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp"
+                            data-multiple="false" data-preview-id="p-thumbs"><i class="fa fa-upload"></i>
+                            上传</button></span>
+                    <span><button type="button" id="fachoose-thumbs" class="btn btn-primary fachoose"
+                            data-input-id="thumbs" data-mimetype="image/*" data-multiple="false"><i
+                                class="fa fa-list"></i> 选择</button></span>
+                </div>
+                <span class="msg-box n-right" for="thumbs"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-thumbs"></ul>
+        </div>
+    </div>
+
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

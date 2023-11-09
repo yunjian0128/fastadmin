@@ -1,0 +1,96 @@
+<div class="panel panel-default panel-intro">
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover table-nowrap">
+            <tr>
+                <td>{:__('BackCode')}</td>
+                <td>{$row.code|htmlentities}</td>
+                <td>{:__('Ordercode')}</td>
+                <td>{$row.ordercode|htmlentities}</td>
+
+            </tr>
+            <tr>
+                <td>{:__('Busid')}</td>
+                <td>{$row.business.nickname|htmlentities}</td>
+                <td>{:__('Contact')}</td>
+                <td>{$row.contact|htmlentities}</td>
+            </tr>
+            <tr>
+                <td>{:__('Phone')}</td>
+                <td>{$row.phone|htmlentities}</td>
+                <td>{:__('Address')}</td>
+                <td>{$row.region_text|htmlentities}-{$row.address|htmlentities}</td>
+            </tr>
+            <tr>
+                <td>{:__('Amount')}</td>
+                <td>{$row.amount|htmlentities}</td>
+                <td>{:__('BackStatus')}</td>
+                <td>{$row.status_text|htmlentities}</td>
+            </tr>
+            <tr>
+                {if($row.expressid)}
+                <td>{:__('Express')}</td>
+                <td>{$row.express_text|htmlentities}</td>
+                {/if}
+                {if($row.expresscode)}
+                <td>{:__('Expresscode')}</td>
+                <td>{$row.expresscode|htmlentities}</td>
+                {/if}
+            </tr>
+            <tr>
+                <td>{:__('Createtime')}</td>
+                <td>{$row.createtime|htmlentities}</td>
+                <td>{:__('Adminid')}</td>
+                <td>{$row.admin_text|htmlentities}</td>
+            </tr>
+            <tr>
+                {if($row.reviewerid)}
+                <td>{:__('Reviewerid')}</td>
+                <td>{$row.reviewer_text|htmlentities}</td>
+                {/if}
+                {if($row.stromanid)}
+                <td>{:__('Storager')}</td>
+                <td>{$row.stroman_text|htmlentities}</td>
+                {/if}
+            </tr>
+            <tr>
+                {if($row.remark)}
+                <td>{:__('Remark')}</td>
+                <td>{$row.remark|htmlentities}</td>
+                {/if}
+                {if($row.reason)}
+                <td>{:__('Reason')}</td>
+                <td>{$row.reason|htmlentities}</td>
+                {/if}
+            </tr>
+            <tr>
+                {if($row.thumbs)}
+                <td>{:__('Thumbs')}</td>
+                <td>
+                    {foreach $row.thumbs_cdn as $val}
+                    <a href="{$val}" target="_blank">
+                        <img src="{$val}" style="width: 100px;" alt="">
+                    </a>
+                    {/foreach}
+                </td>
+                {/if}
+            </tr>
+        </table>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover table-nowrap">
+            <tr>
+                <th>{:__('ProductName')}</th>
+                <th>{:__('ProductPrice')}</th>
+                <th>{:__('ProductNum')}</th>
+                <th>{:__('ProductAmount')}</th>
+            </tr>
+
+            {foreach $BackProductList as $item}
+            <td>{$item.products.name}</td>
+            <td>{$item.price}</td>
+            <td>{$item.nums}</td>
+            <td>{$item.total}</td>
+            {/foreach}
+        </table>
+    </div>
+</div>

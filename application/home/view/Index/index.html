@@ -1,0 +1,49 @@
+<title>微信平台视频付费系统</title>
+<link href="/assets/home/css/index.css" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/home/css/swiper-bundle.css">
+<script src="/assets/home/js/swiper-bundle.min.js"></script>
+
+<body>
+    <div class="mui-content">
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                {foreach $top as $item}
+                <div class="swiper-slide">
+                    <a href="{:url('home/index/info', ['pid' => $item['id']])}">
+                        <img src="{$item.thumbs_text}">
+                        <p class="mui-slider-title">{$item.title}</p>
+                    </a>
+                </div>
+                {/foreach}
+            </div>
+            <div class="swiper-pagination" style="text-align: right;"></div>
+        </div>
+    </div>
+
+    <div class="mui-content">
+        <h5 class="title">精选课程</h5>
+        <ul class="mui-table-view mui-grid-view">
+            {foreach $list as $item}
+            <li class="mui-table-view-cell mui-media mui-col-xs-6">
+                <a href="{:url('home/index/info', ['pid' => $item['id']])}">
+                    <div class="imgs">
+                        <img class="mui-media-object" src="{$item.thumbs_text}">
+                    </div>
+                    <div class="mui-media-body">{$item.title}</div>
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+
+    <!-- 底部 -->
+    {include file="Common/menu" /}
+</body>
+
+<script>
+    var swiper = new Swiper(".mySwiper", {
+        pagination: {
+            el: ".swiper-pagination",
+        },
+    });
+</script>

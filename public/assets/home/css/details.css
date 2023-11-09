@@ -1,0 +1,154 @@
+body {
+  font-family: "Microsoft YaHei";
+}
+
+p {
+  font-size: 20px;
+  color: #000;
+}
+
+.info {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  align-content: stretch;
+}
+
+.info h4 {
+  margin: 0;
+  padding: 0;
+  margin-top: 5px;
+}
+
+.info .action {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+
+.title {
+  margin: 20px 15px 10px;
+  color: #6d6d72;
+  font-size: 16px;
+}
+
+.content {
+  padding: 10px;
+}
+
+.userimg {
+  border-radius: 50px;
+}
+
+.head {
+  background-color: white;
+  height: auto;
+  padding: 20px 15px;
+}
+
+.ins {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+}
+
+.price {
+  color: red;
+  font-weight: 600;
+}
+
+.head .thumbs {
+  width: 25px;
+  display: inline-block;
+}
+
+.head .num {
+  font-size: 16px;
+  display: inline-block;
+  margin-left: 3px;
+  height: 25px;
+  line-height: 30px;
+}
+
+.head .weui-media-box__title {
+  margin-bottom: 15px;
+}
+
+#cover {
+  height: 274px;
+}
+
+#cover .cover_bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+#play {
+  width: 100%;
+  height: 70vw;
+  text-align: center;
+  line-height: 80vw;
+  position: absolute;
+  top: 0;
+}
+
+#play img {
+  width: 20vw;
+  height: 20vw;
+}
+
+#video {
+  width: 100%;
+  height: 274px;
+  display: none;
+}
+
+.head .weui-media-box__title .content {
+  float: right;
+  margin-right: 10px;
+  color: #6d6d72;
+  font-size: 3vw;
+}
+
+.mui-table-view {
+  box-sizing: content-box;
+  line-height: normal;
+}
+
+.mui-table-view img {
+  width: 100% !important;
+  height: 100%;
+  object-fit: cover;
+}
+
+.list {
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+.list td {
+  border: 1px solid #ccc;
+  height: 35px;
+}
+
+.list td:first-child {
+  width: 30%;
+  text-align: center;
+}
+
+.list td:last-child {
+  text-indent: 10px;
+}
+
+.more {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0px;
+}

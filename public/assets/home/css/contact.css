@@ -1,0 +1,131 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Microsoft YaHei';
+  background-color: rgb(245, 245, 245);
+}
+
+img {
+  width: 100%;
+}
+
+h1 {
+  text-align: center;
+  line-height: 20px;
+}
+
+.weui-article {
+  padding: 5px 15px;
+}
+
+small {
+  color: #0b720b;
+}
+
+h2 {
+  color: #0b720b;
+}
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide a  img{
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mui-content .imgs{
+  height: 240px;
+}
+.mui-content  .mui-slider-title{
+  background-color:#5b5555;color:white;
+}
+
+.weui-article{
+  padding: 5px 15px;
+  text-align: center;
+  background-color: white;
+}
+
+.weui-article h1 {
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: .9em
+}
+
+.weui-article h2 {
+  font-size: 16px
+}
+
+.weui-article h2,.weui-article h3 {
+  font-weight: 400;
+  margin-bottom: .34em
+}
+
+.weui-article h3 {
+  font-size: 15px
+}
+
+.weui-article * {
+  max-width: 100%;
+  box-sizing: border-box;
+  word-wrap: break-word
+}
+
+.weui-article section{
+  margin-bottom: 1.5em;
+}
+
+.weui-article p {
+  margin: 0 0 .8em
+}
+
+.list{
+  width:100%;
+  margin:0 auto;
+  border:1px solid #ccc;
+  background:#fff;
+}
+
+.list td{
+  border:1px solid #ccc;
+  height:35px;
+}
+
+.list td:first-child{
+  width:30%;
+  text-align: center;
+}
+
+.list td:last-child{
+  text-indent: 10px;
+}

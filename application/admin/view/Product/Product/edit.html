@@ -1,0 +1,103 @@
+<form id="add-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+
+    <!-- 商品名称 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-name" data-rule="required" class="form-control" name="row[name]" type="text"
+                value="{$row.name}">
+        </div>
+    </div>
+
+    <!-- 商品描述 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-content" data-rule="required" class="form-control editor" rows="5" name="row[content]"
+                cols="50">{$row.content}</textarea>
+        </div>
+    </div>
+
+    <!-- 商品图片 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Thumbs')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <input id="c-thumbs" class="form-control" data-rule="required" size="50" name="row[thumbs]"
+                    type="textarea" value="{$row.thumbs}">
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-thumbs" class="btn btn-danger faupload"
+                            data-input-id="c-thumbs"
+                            data-mimetype="image/gif,image/jpeg,image/png,image/jpg,image/bmp,image/webp"
+                            data-multiple="true" data-preview-id="p-thumbs"><i class="fa fa-upload"></i>
+                            {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-thumbs" class="btn btn-primary fachoose"
+                            data-input-id="c-thumbs" data-mimetype="image/*" data-multiple="true"><i
+                                class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="c-thumbs"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-thumbs"></ul>
+        </div>
+    </div>
+
+    <!-- 商品价格 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Price')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="c-price" data-rule="required" class="form-control" name="row[price]" type="number"
+                value="{$row.price}">
+        </div>
+    </div>
+
+    <!-- 商品标签 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Flag')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <select id="c-flag" class="form-control selectpicker" name="row[flag]">
+                {foreach name="FlagList" item="vo"}
+                <option value="{$key}" {in name="key" value="$row.flag" }selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+
+    <!-- 商品状态 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Status')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <select id="c-status" class="form-control selectpicker" name="row[status]">
+                {foreach name="StatusList" item="vo"}
+                <option value="{$key}" {in name="key" value="$row.status" }selected{/in}>{$vo}</option>
+                {/foreach}
+            </select>
+
+        </div>
+    </div>
+
+    <!-- 商品分类 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Type')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            {:build_select('row[typeid]', $CategoryList, $row['typeid'], ['class'=>'selectpicker',
+            'required'=>''])}
+        </div>
+    </div>
+
+    <!-- 商品单位 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Unit')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            {:build_select('row[unitid]', $UnitList, null, ['class'=>'selectpicker', 'required'=>''])}
+        </div>
+    </div>
+
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

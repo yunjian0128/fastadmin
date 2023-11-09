@@ -1,0 +1,74 @@
+.weui-msg{
+    padding-top: 36px;
+    text-align: center;
+}
+.weui-msg__icon-area{
+    margin-bottom: 30px;
+}
+
+.weui-msg__icon-area img{
+    width: 93px;
+    height: 93px;
+}
+
+.weui-msg__text-area{
+    margin-bottom: 25px;
+    padding: 0 20px;
+}
+.weui-msg__title{
+    margin-bottom: 5px;
+    font-weight: 400;
+    font-size: 20px;
+}
+.weui-msg__desc{
+    font-size: 14px;
+    color: #999;
+}
+.weui-msg__opr-area{
+    margin-bottom: 25px;
+}
+.weui-btn-area{
+    margin: 1.17647059em 15px 0.3em;
+}
+.weui-btn_primary{
+    background-color: #1aad19;
+}
+.weui-btn{
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 14px;
+    padding-right: 14px;
+    box-sizing: border-box;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    line-height: 2.55555556;
+    border-radius: 5px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    overflow: hidden;
+}
+.weui-btn:after{
+    content: " ";
+    width: 200%;
+    height: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid rgba(0,0,0,.2);
+    -webkit-transform: scale(.5);
+    transform: scale(.5);
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    box-sizing: border-box;
+    border-radius: 10px;
+}
+.weui-btn_default{
+    color: #000;
+    background-color: #f8f8f8;
+}
+.weui-btn+.weui-btn{
+    margin-top: 15px;
+}

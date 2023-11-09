@@ -1,0 +1,72 @@
+/*充值金额*/
+.money_box {
+  height: 127px;
+  position: relative;
+  background-color: #fff;
+}
+.money_box h1 {
+  line-height: 39px;
+  font-size: 14px;
+  color: #65646b;
+  margin-left: 4%;
+}
+.money_box h1 span {
+  font-size: 12px;
+  color: #ff7f00;
+}
+.money {
+  float: left;
+  width: 20%;
+  height: 33px;
+  line-height: 33px;
+  text-align: center;
+  color: #191919;
+  margin-left: 4%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+  background-position: left top;
+  background-size: 19px 19px;
+  background-repeat: no-repeat;
+}
+.money_box input {
+  width: 20%;
+  height: 33px;
+  text-align: center;
+  color: #65646b;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+  position: absolute;
+  left: 76%;
+}
+input:placeholder {
+  color: #191919;
+}
+.choose {
+  border: 1px solid #55817b;
+  color: #55817b;
+}
+button {
+  margin-top: 50px;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.title{
+  font-size:1em;
+  width:22%!important;
+  white-space: nowrap;
+}
+
+.money{
+  font-size:1em;
+  width:60%!important;
+  float:left!important;
+}
+
+.btn{
+  margin-top:10px;
+}

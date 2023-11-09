@@ -1,0 +1,26 @@
+<div class="panel panel-default panel-intro">
+    <!-- 公共头部信息 要不要无所谓 -->
+    {:build_heading()}
+
+    <div class="panel-body">
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="one">
+                <div class="widget-body no-padding">
+                    <!-- 工具栏 id="toolbar" class="toolbar" -->
+                    <div id="toolbar" class="toolbar">
+                        <!-- 调用common.php 就是辅助函数 -->
+                        {:build_toolbar('refresh,add,edit,del,import')}
+                    </div>
+
+                    <!-- table表格就是渲染的列表结构 -->
+                    <!-- 表格中自定义按钮关联的权限 data-operate -->
+                    <table id="table" class="table table-striped table-bordered table-hover table-nowrap"
+                        data-operate-info="{:$auth->check('subject/info/index')}"
+                        data-operate-edit="{:$auth->check('subject/subject/edit')}"
+                        data-operate-del="{:$auth->check('subject/subject/del')}" width="100%">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<title>个人中心</title>
+<link href="/assets/home/css/center.css" rel="stylesheet" />
+
+<body style="width: 480px;margin: 0 auto;">
+    <!-- 头部 -->
+    <div class="user">
+        <div class="avatar wow fadeInUp">
+            <img src="{$business.avatar_text}" />
+        </div>
+
+        <div class="nickname wow fadeInUp" data-wow-delay="100ms">{$business.nickname}</div>
+    </div>
+
+    <!-- 菜单 -->
+    <div class="menulist wow fadeInUp" data-wow-delay="300ms">
+        <a href="{:url('home/business/profile')}" class="item">
+            <span>基本资料</span>
+            <img src='/assets/home/images/row.png' />
+        </a>
+        {if condition="$business.auth == '0'"}
+        <a href="{:url('home/business/email')}" class="item">
+            <span>邮箱认证</span>
+            <img src='/assets/home/images/row.png' />
+        </a>
+        {/if}
+        <a href="{:url('home/business/order')}" class="item">
+            <span>我的订单</span>
+            <img src='/assets/home/images/row.png' />
+        </a>
+        <a href="{:url('home/business/record')}" class="item">
+            <span>我的消费</span>
+            <img src='/assets/home/images/row.png' />
+        </a>
+        <a href="{:url('home/business/recharge')}" class="item">
+            <span>充值</span>
+            <img src='/assets/home/images/row.png' />
+        </a>
+        <a href="{:url('home/business/contact')}" class="item">
+            <span>联系我们</span>
+            <img src='/assets/home/images/row.png' />
+        </a>
+        <a id="logout" href="javascript:void(0)" class="item">
+            <span>退出</span>
+            <img src='/assets/home/images/row.png' />
+        </a>
+    </div>
+
+    <!-- 底部 -->
+    {include file="Common/menu" /}
+</body>
+
+<script src="/assets/home/js/jquery-1.9.1.min.js"></script>
+<script src="/assets/home/js/mui.min.js"></script>
+<script>
+    // 点击头像 查看大图
+    $('.avatar').click(() => {
+        mui.previewImage({
+            current: 0,
+            urls: ['{$business.avatar}']
+        })
+    })
+
+    // 退出
+    $('#logout').click(() => {
+        mui.confirm(
+            '是否确认退出',
+            '退出提醒',
+            ['确认', '取消'],
+            function (res) {
+                if (res.index === 0) {
+                    mui.toast('退出成功')
+
+                    // 关闭当前窗口
+                    $('.mui-popup-backdrop').remove()
+                    $('.mui-popup').remove()
+
+                    setTimeout(() => {
+                        location.href = '{:url("home/index/logout")}'
+                    }, 500)
+                }
+            }
+        )
+    })
+</script>

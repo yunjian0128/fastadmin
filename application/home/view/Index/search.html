@@ -1,0 +1,138 @@
+<title>视频搜索</title>
+<link rel="stylesheet" href="/assets/home/plugin/mescroll/mescroll.min.css" />
+<link rel="stylesheet" href="/assets/home/css/search.css" />
+
+<script src="/assets/home/plugin/mescroll/mescroll.min.js"></script>
+
+<body>
+    <!-- 搜索框 -->
+    <div class="mui-input-row mui-search">
+        <input type="search" class="mui-input-clear" placeholder="请输入课程名称" name="search" />
+    </div>
+
+    <!-- 课程列表 -->
+    <div id="mescroll" class="mescroll">
+        <ul id="list" class="mui-table-view"></ul>
+    </div>
+
+    <!-- 底部 -->
+    {include file="Common/menu" /}
+</body>
+
+<script>
+    var search = ''
+
+    // 关键词
+    $("input[name=search]").change(function () {
+        search = $.trim($(this).val())
+
+        // 触发加载
+        DownCallback()
+    })
+
+
+    var mescroll = new MeScroll('mescroll', {
+        down: {
+            auto: false, // 是否在初始化完毕之后自动执行下拉回调callback; 默认true
+            callback: DownCallback // 下拉刷新的回调
+        },
+        up: {
+            page: {
+                num: 0, // 默认从第0页开始起步
+                size: 20, // 每页显示多少条
+                time: null, // 时间
+            },
+            auto: true, // 是否在初始化时以上拉加载的方式自动加载第一页数据; 默认false
+            isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+            callback: UpCallback, // 上拉回调,此处可简写; 相当于 callback: function (page) { upCallback(page); }
+            htmlNodata: `<div class="more">没有更多了..</div>`, // 没有更多数据的结构配置
+            toTop: { // 配置回到顶部按钮
+                duration: 600,
+                src: "/assets/home/images/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                offset: 100
+            }
+        }
+    })
+
+    // 下拉触发的回调函数
+    function DownCallback() {
+
+        // 下拉刷新的回调; 默认重置上拉加载列表为第一页
+        mescroll.resetUpScroll()
+        $("#list").empty()
+    }
+
+    // 上拉加载
+    function UpCallback(current) {
+        // 当前页码值
+        page = current.num
+        limit = current.size
+
+        // 组装数据
+        var data = {
+            page,
+            limit,
+            search,
+        }
+
+        $.ajax({
+            url: `{:url('home/index/search')}`,
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            success: function (success) {
+                if (success.code == 0) {
+                    // 提醒
+                    mui.toast(success.msg, { duration: 1000 })
+
+                    // 暂无更多数据
+                    mescroll.endBySize(0, 0)
+                    return false
+                }
+
+                var list = success.data.list
+                var count = success.data.count
+
+                // 设置上拉加载状态
+                mescroll.endBySize(list.length, count)
+
+                // 渲染列表数据
+                FetchList(list);
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+
+    // 渲染页面数据
+    function FetchList(list) {
+        var html = ''
+
+        for (var item of list) {
+            html += `
+            <li class="mui-table-view-cell mui-media">
+                <a class="item" href="{:url('home/index/info')}?subid=${item.id}">
+                    <div class="thumb">
+                        <img class="img" src="${item.thumbs_text}">
+                    </div>
+                    <div class="info">
+                        <h5 class="title">${item.title}</h5>
+                        <p class="content mui-ellipsis">课程分类：${item.category.name}</p>
+                        <p class="content mui-ellipsis">创建时间：${item.createtime_text}</p>
+                        <p class="bottom">
+                            <span class="like mui-icon mui-icon-starhalf">
+                                <span>${item.likes_text}</span>
+                            </span>
+                            <span class="price">￥${item.price}</span>
+                        </p>
+                    </div>
+                </a>
+            </li>
+        `
+        }
+
+        // 将循环的内容追加到 ul元素中
+        $("#list").append(html)
+    }
+</script>

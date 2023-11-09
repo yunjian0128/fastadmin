@@ -1,0 +1,38 @@
+<title>购买完成</title>
+<link rel="stylesheet" href="/assets/home/css/comment.css">
+
+<body>
+    <img src="{$subject.thumbs_text}" style="width:100%;">
+    <div class="weui-cells__title" style="font-size:16px;">{$subject.title}</div>
+    <form method="post">
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea class="weui-textarea" placeholder="请输入内容" name="content" rows="3">{$content}</textarea>
+                    <div class="weui-textarea-counter"></div>
+                </div>
+            </div>
+        </div>
+        <div class="action">
+            <button type="submit" class="mui-btn mui-btn-primary">立即提交</button>
+        </div>
+    </form>
+
+    <!-- 底部 -->
+    {include file="Common/menu" /}
+
+</body>
+
+<script>
+    // 获取文本域
+    var textarea = $('.weui-textarea');
+    var counter = $('.weui-textarea-counter');
+    var length = $(textarea).val().length;
+    counter.text(length + '/200');
+    textarea.on('input', function () {
+        length = $(this).val().length;
+        // 剩余字符/总字符
+        counter.text(length + '/200');
+    });
+
+</script>

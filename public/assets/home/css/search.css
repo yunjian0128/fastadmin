@@ -1,0 +1,86 @@
+.mui-media a{
+  width:100%;
+  display: flex!important;
+  justify-content:left;
+  align-items:stretch;
+  align-content: stretch;
+  margin:0!important;
+  padding:0!important;
+
+}
+
+.thumb {
+  flex-shrink: 0;
+  width: 50%;
+  margin-right: 2%;
+  height: 150px;
+}
+
+.thumb .img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info{
+  width:50%;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+}
+
+.info > *{
+  width: 100%;
+}
+
+.info .title {
+  color: #000;
+  width: 100%;
+  font-weight: bold;
+  font-size: 1em;
+  margin:0;
+}
+.info .content {
+  color: #8f8f94;
+  font-size: 14px;
+}
+
+.info .bottom {
+  display: flex;
+  justify-content: space-between;
+  align-content: stretch;
+  align-items: center;
+}
+
+.info .like {
+  color: skyblue;
+}
+.info .like span {
+  font-size: 14px;
+}
+.info .price {
+  font-size: 14px;
+  color: red;
+  font-weight: bold;
+}
+.more {
+  line-height: 60px;
+  text-align: center;
+  color: #919191;
+}
+.mui-search .mui-placeholder {
+  background-color: white;
+  height: 49px;
+  line-height: 49px;
+}
+/* .mui-search {
+  margin-bottom: 15px;
+} */
+input[type=search]{
+  background-color: white;
+  height: 49px;
+  line-height: 49px;
+}
+.mui-input-row.mui-search .mui-icon-clear {
+  top: 14px;
+}

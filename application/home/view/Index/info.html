@@ -1,0 +1,291 @@
+<title>课程信息</title>
+<link rel="stylesheet" href="/assets/home/plugin/ckplayer/css/ckplayer.css" />
+<link rel="stylesheet" href="/assets/home/css/details.css" />
+
+<!-- 加载ckplayer视频插件 -->
+<script src="/assets/home/plugin/ckplayer/js/ckplayer.js"></script>
+
+<style>
+    body {
+        position: relative !important;
+    }
+
+    #play {
+        /* width: 100%; */
+        height: 274px !important;
+        line-height: 350px !important;
+    }
+
+    #play img {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    #sheet1 {
+        width: 480px !important;
+    }
+
+    .dm {
+        left: 100%;
+        bottom: 150px;
+        color: #FFF;
+        font-size: 22px;
+        line-height: 50px;
+        background-color: rgba(244, 67, 54, 0.9);
+        border-radius: 25px;
+        padding: 0 30px;
+        width: auto;
+        cursor: pointer;
+        display: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<body>
+    <div id="cover">
+        <!-- 课程封面 -->
+        <img class="cover_bg" src="{$subject.thumbs_text}" />
+        <!-- 中间播放键 -->
+        <div id="play">
+            <img src="/assets/home/images/play.png" />
+        </div>
+    </div>
+
+    <!-- ckplayer视频容器元素 -->
+    <div id="video"></div>
+
+    <!-- 课程信息 -->
+    <div class="head">
+        <div class="info">
+            <h4 class="name">{$subject.title}</h4>
+            <div class="action">
+                {if condition="$subject.like_status"}
+                <!-- 已点赞 -->
+                <img id="like" data-status="remove" class="thumbs" src="/assets/home/images/thumbs-up.png" alt="">
+                {else /}
+                <!-- 未点赞 -->
+                <img id="like" data-status="add" class="thumbs" src="/assets/home/images/thumbs.png" alt="">
+                {/if}
+                <span class="num">{$subject.likes_text}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="title">课程信息</div>
+    <table class="list">
+        <tr>
+            <td>课程名称</td>
+            <td>{$subject.title}</td>
+        </tr>
+        <tr class="price">
+            <td>课程价格</td>
+            <td>￥{$subject.price}元</td>
+        </tr>
+        <tr>
+            <td>发布时间</td>
+            <td>{$subject.createtime_text}</td>
+        </tr>
+        <tr>
+            <td>章节总数</td>
+            <td>{$chapter|count}小节</td>
+        </tr>
+    </table>
+
+    <div class="title">课程介绍</div>
+    <div class="mui-table-view content">{$subject.content}</div>
+
+    <div class="title">课程章节</div>
+    <ul id="chapter" class="mui-table-view">
+        {if condition="$chapter"}
+        {foreach $chapter as $key=>$item}
+        <li data-cid="{$item.id}" class="item mui-table-view-cell">第{$key + 1}节 - {$item.title}</li>
+        {/foreach}
+        {else /}
+        <li class="mui-table-view-cell">暂无课程章节</li>
+        {/if}
+    </ul>
+
+    <!-- 评论内容 -->
+    {if condition="$comment"}
+    <div class="title">用户评论</div>
+
+    <ul class="mui-table-view">
+        {foreach $comment as $item}
+        <li class="mui-table-view-cell mui-media">
+            <a href="javascript:void(0);">
+                <img class="mui-media-object mui-pull-left userimg" src="{$item.business.avatar_text}">
+                <div class="mui-media-body">
+                    {$item.business.nickname ? $item.business.nickname : '匿名'}
+                    <p class='mui-ellipsis'>{$item.content}</p>
+                </div>
+            </a>
+        </li>
+        {/foreach}
+    </ul>
+
+    <div class="more">
+        <a id="more_comment" href="{:url('home/index/more')}?subid={$subject.id}"
+            class="mui-btn mui-btn-primary mui-btn-outlined">查看更多评论</a>
+    </div>
+    {/if}
+
+    <!-- 弹出菜单 -->
+    <div id="sheet1" class="mui-popover mui-popover-bottom mui-popover-action">
+        <!-- 可选择菜单 -->
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <a id="buy" href="javascript:void(0)">
+                    立即购买
+                </a>
+            </li>
+        </ul>
+        <!-- 取消菜单 -->
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <a href="#sheet1"><b>取消</b></a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 底部 -->
+    {include file="Common/menu" /}
+
+</body>
+
+<script>
+    // 章节id
+    var cid = 0;
+
+    // 课程id
+    var subid = `{$subject.id}`;
+
+    // 播放器
+    var player;
+
+    // 点击切换章节
+    $("#chapter .item").click(function () {
+        // 获取章节id
+        cid = $(this).data('cid');
+
+        // 设置当前章节为选中状态
+        $(this).css('color', 'blue').siblings().css('color', 'black');
+
+        $("#video").css('display', 'none'); // 隐藏视频容器
+        $("#cover").css('display', 'block'); // 显示封面
+
+        if (player) {
+            player.pause(); // 暂停视频
+        }
+    })
+
+    //点击取消，关闭弹出菜单
+    $("#iosActionsheetCancel").click(function () {
+        mui('#sheet1').popover('toggle');
+    })
+
+    // 播放视频
+    $("#play").click(function () {
+        // 发送Ajax请求，获取视频播放地址
+        $.ajax({
+            url: `{:url('home/index/play')}`,
+            type: 'post',
+            data: { cid, subid },
+            dataType: 'json',
+            success: function (success) {
+                if (success.code == 0) {
+                    mui.toast(success.msg)
+                    return false
+                }
+
+                var data = success.data;
+
+                // 没购买，弹出购买弹出框
+                // hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性
+                if (data.hasOwnProperty('status') && data.status == 'buy') {
+                    mui('#sheet1').popover('toggle');
+                    return false
+                }
+
+                $("#cover").css('display', 'none'); // 隐藏封面
+                $("#video").css('display', 'block'); // 显示视频容器
+
+                // 初始化播放器
+                var options = {
+                    container: '#video', // 容器元素
+                    autoplay: true, // 自动播放
+                    video: data.url, // 视频地址
+                    webFull: true, // Web全屏
+                    mobileFull: true, // 手机全屏
+                    live: false, // 直播
+                    theater: false, // 剧场模式
+                    loop: false, // 循环播放
+                    playbackrateList: [0.75, 1, 1.25, 1.5, 2, 4], // 倍速配置值
+                    timeScheduleAdjust: 1, // 调节播放进度,0不启用，1是启用，2是只能前进（向右拖动），3是只能后退，4是只能前进但能回到第一次拖动时的位置，5是看过的地方可以随意拖动
+                    smallWindowsDrag: true, // 小窗口开启时是否可以拖动
+                    smallWindows: true, // 小窗口模式
+                    rightBar: true,// 右边控制栏
+                    controls: true,// 自带控制栏
+                    screenshot: true,// 截图功能
+                }
+
+                player = new ckplayer(options);
+            },
+            error: function (error) {
+                mui.toast(error.msg)
+            }
+        })
+    })
+
+    // 立即购买
+    $("#buy").click(function () {
+        mui('#sheet1').popover('toggle');
+        var btnArray = ['否', '是'];
+        mui.confirm('请问您确认购买吗？', '尊敬的用户', btnArray, function (e) {
+            if (e.index == 1) {
+                $.ajax({
+                    url: `{:url('home/index/buy')}`,
+                    type: 'post',
+                    data: { subid },
+                    dataType: 'json',
+                    success: function (success) {
+                        if (success.code == 0) {
+                            mui.toast(success.msg)
+                            return false
+                        }
+
+                        mui.toast(success.msg)
+
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1000)
+                    }
+                })
+            }
+        })
+    })
+
+    //点赞
+    $("#like").click(function () {
+        var subid = `{$subject.id}`
+
+        //获取到点赞状态
+        var status = $(this).data('status')
+
+        //发送ajax请求进行点赞
+        $.ajax({
+            url: `{:url("home/index/like")}`,
+            type: 'post',
+            data: { subid, status },
+            dataType: 'json',
+            success: function (success) {
+                mui.toast(success.msg, { duration: 500 })
+
+                setTimeout(() => {
+                    location.reload()
+                }, 500)
+            }
+        })
+    })    
+</script>

@@ -1,0 +1,138 @@
+<div class="panel panel-default panel-intro">
+    <div class="panel-heading">
+        {:build_heading(null, false)}
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#info" data-toggle="tab">客户详情</a></li>
+            <li><a href="#visit" data-toggle="tab">回访列表</a></li>
+            <li><a href="#receive" data-toggle="tab">申请记录</a></li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <div id="myTabContent" class="tab-content">
+
+            <!-- 客户详情 -->
+            <div class="tab-pane fade active in" id="info">
+                <div class="panel-body newrow prindBody">
+                    <form id="add-form" class="form-horizontal form-ajax" role="form" data-toggle="validator"
+                        method="POST">
+                        <div class="form-group">
+                            <label for="nickname" class="control-label col-xs-12 col-sm-2">{:__('Nickname')}:</label>
+                            <div class="control-label col-xs-12 col-sm-2" style="text-align:left;">
+                                {$row.nickname}
+                            </div>
+                        </div>
+
+                        {if condition="$row['email']"}
+                        <div class="form-group">
+                            <label for="email" class="control-label col-xs-12 col-sm-2">{:__('Email')}:</label>
+                            <div class="control-label col-xs-12 col-sm-2" style="text-align:left;">
+                                {$row['email']}
+                            </div>
+                        </div>
+                        {/if}
+
+                        <div class="form-group">
+                            <label for="mobile" title="手机号码就是密码"
+                                class="control-label col-xs-12 col-sm-2">{:__('Mobile')}:</label>
+                            <div class="control-label col-xs-12 col-sm-2" style="text-align:left;">
+                                {$row['mobile']}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-2">{:__('Gender')}:</label>
+                            <div class="control-label col-xs-12 col-sm-2" style="text-align:left;">
+                                {$row.gender==0 ? '保密' : '' }
+                                {$row.gender==1 ? '男' : '' }
+                                {$row.gender==2 ? '女' : '' }
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-2">{:__('Auth')}:</label>
+                            <div class="control-label col-xs-12 col-sm-2" style="text-align:left;">
+                                {$row.gender==0 ? '未认证' : '' }
+                                {$row.gender==1 ? '已认证' : '' }
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="money" class="control-label col-xs-12 col-sm-2">{:__('Money')}:</label>
+                            <div class="control-label col-xs-12 col-sm-2" style="text-align:left;">
+                                {$row['money']}
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-2">{:__('Source')}:</label>
+                            <div class="control-label col-xs-12 col-sm-2" style="text-align:left;">
+                                {$Sourcelist[$row['sourceid']] ? $Sourcelist[$row['sourceid']] : '未知来源'}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price" class="control-label col-xs-12 col-sm-2">{:__('Eare')}:</label>
+                            <div class=" control-label col-xs-12 col-sm-8" style="text-align:left;">
+                                {$row.province_text}-{$row.city_text}-{$row.district_text}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-2">{:__('Deal')}:</label>
+                            <div class="control-label col-xs-12 col-sm-2" style="text-align:left;">
+                                {$row.deal==0 ? '未成交' : '' }
+                                {$row.deal==1 ? '已成交' : '' }
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price" class="control-label col-xs-12 col-sm-2">{:__('Createtime')}:</label>
+                            <div class=" control-label col-xs-12 col-sm-8" style="text-align:left;">
+                                {$row.createtime_text}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price" class="control-label col-xs-12 col-sm-2">{:__('Avatar')}:</label>
+                            <div class=" control-label col-xs-12 col-sm-8" style="text-align:left;">
+                                <img src="{$row.avatar_text}" width="100" alt="">
+                            </div>
+                        </div>
+
+                        <div class="form-group hidden layer-footer">
+                            <label class="control-label col-xs-12 col-sm-2"></label>
+                            <div class="col-xs-12 col-sm-8">
+                                <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+                                <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 回访列表 -->
+            <div class="tab-pane fade" id="visit">
+                <div class="panel-body newrow prindBody">
+                    <div id="toolbar2" class="toolbar">
+                        {:build_toolbar('refresh,add,edit,del')}
+                    </div>
+                    <table id="table2" class="table table-striped table-bordered table-hover" width="100%">
+                    </table>
+                </div>
+            </div>
+
+            <!-- 申请记录 -->
+            <div class="tab-pane fade" id="receive">
+                <div class="panel-body newrow prindBody">
+                    <div id="toolbar3" class="toolbar">
+                        {:build_toolbar('refresh')}
+                    </div>
+                    <table id="table3" class="table table-striped table-bordered table-hover" width="100%">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

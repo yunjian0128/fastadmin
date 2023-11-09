@@ -1,0 +1,105 @@
+<style>
+    .region_city .city-picker-span {
+        width: 80% !important;
+        position: relative;
+    }
+</style>
+
+<form id="add-form" class="form-horizontal form-ajax" role="form" data-toggle="validator" method="POST">
+    <div class="form-group">
+        <label for="nickname" class="control-label col-xs-12 col-sm-2">{:__('Nickname')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" class="form-control" id="nickname" name="row[nickname]" data-rule="required;nickname"
+                placeholder="{:__('Nickname')}" value="{$row['nickname']}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="email" class="control-label col-xs-12 col-sm-2">{:__('Email')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" class="form-control" id="email" name="row[email]" data-rule="required;email"
+                placeholder="{:__('Email')}" value="{$row['email']}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="mobile" title="手机号码就是密码" class="control-label col-xs-12 col-sm-2">{:__('Mobile')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" title="手机号码就是密码" class="form-control" id="mobile" name="row[mobile]"
+                data-rule="required;mobile" placeholder="{:__('Mobile')}" value="{$row['mobile']}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="mobile" class="control-label col-xs-12 col-sm-2">{:__('RePassword')}</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="password" class="form-control" id="password" name="row[password]" placeholder="请输入密码" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Gender')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <select id="gender" data-rule="required" class="form-control selectpicker" name="row[gender]">
+                <option value="0" {$row.gender==0 ? 'selected' : '' }>保密</option>
+                <option value="1" {$row.gender==1 ? 'selected' : '' }>男</option>
+                <option value="2" {$row.gender==2 ? 'selected' : '' }>女</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Auth')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <select id="auth" class="form-control selectpicker" name="row[auth]">
+                <option value="0" {$row.auth=='0' ? 'selected' : '' }>未认证</option>
+                <option value="1" {$row.auth=='1' ? 'selected' : '' }>已认证</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="money" class="control-label col-xs-12 col-sm-2">{:__('Money')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="number" min="0" class="form-control" id="c-money" name="row[money]" data-rule="required"
+                placeholder="{:__('Money')}" value="{$row['money']}" />
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Source')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            {:build_select('row[sourceid]', $Sourcelist, $row.sourceid, ['class'=>'form-control selectpicker',
+            'required'=>''])}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Deal')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <select id="deal" data-rule="required" class="form-control selectpicker" name="row[deal]">
+                <option value="0" {$row.deal==0 ? 'selected' : '' }>未成交</option>
+                <option value="1" {$row.deal==1 ? 'selected' : '' }>已成交</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('SelDir')}</label>
+        <div class="col-xs-12 col-sm-10 region_city">
+            <input id="region" readonly type="text" data-toggle="city-picker" value="{$row['regionCode']}">
+
+            <!-- 用于提交数据把选中的地区传给后端处理 -->
+            <input type="hidden" name="row[code]" id="region-code">
+        </div>
+    </div>
+
+    <div class="form-group hidden layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-success btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

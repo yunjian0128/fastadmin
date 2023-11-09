@@ -1,0 +1,144 @@
+<title>我的订单</title>
+<link rel="stylesheet" href="/assets/home/plugin/mescroll/mescroll.min.css" />
+<link href="/assets/home/css/order.css" rel="stylesheet" />
+
+<script src="/assets/home/plugin/mescroll/mescroll.min.js"></script>
+
+
+<body>
+    <!-- 订单 -->
+    <div class="title">我的订单</div>
+    <div id="mescroll" class="mescroll">
+        <ul class="mui-table-view" id="list"></ul>
+    </div>
+
+    <!-- 底部 -->
+    {include file="Common/menu" /}
+</body>
+
+<script>
+    var busid = "{$business.id}";
+
+    var mescroll = new MeScroll('mescroll', {
+        down: {
+            auto: false, // 是否在初始化完毕之后自动执行下拉回调callback; 默认true
+            callback: DownCallback // 下拉刷新的回调
+        },
+        up: {
+            page: {
+                num: 0, // 默认从第0页开始起步
+                size: 20, // 每页显示多少条
+                time: null, // 时间
+            },
+            auto: true, // 是否在初始化时以上拉加载的方式自动加载第一页数据; 默认false
+            isBounce: false, // 此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+            callback: UpCallback, // 上拉回调,此处可简写; 相当于 callback: function (page) { upCallback(page); }
+            htmlNodata: `<div class="more">没有更多了..</div>`, // 没有更多数据的结构配置
+            toTop: { // 配置回到顶部按钮
+                duration: 600,
+                src: "/assets/home/images/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                offset: 100
+            }
+        }
+    })
+
+    // 下拉触发的回调函数
+    function DownCallback() {
+        // 下拉刷新的回调; 默认重置上拉加载列表为第一页
+        mescroll.resetUpScroll()
+        $("#list").empty()
+    }
+
+    // 上拉触发的回调函数
+    function UpCallback(current) {
+        // 当前页码值
+        page = current.num
+        limit = current.size
+
+        // 组装数据
+        var data = {
+            busid,
+            page,
+            limit,
+        }
+
+        $.ajax({
+            url: `{:url('home/business/order')}`,
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            success: function (success) {
+                if (success.code == 0) {
+                    // 提醒
+                    mui.toast(success.msg, { duration: 1000 })
+
+                    // 暂无更多数据
+                    mescroll.endBySize(0, 0)
+                    return false
+                }
+
+                var list = success.data.list
+                var count = success.data.count
+
+                // 设置上拉加载状态
+                mescroll.endBySize(list.length, count)
+
+                // 渲染列表数据
+                FetchList(list);
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+
+    // 渲染列表数据
+    function FetchList(list) {
+        var html = ''
+        for (var item of list) {
+            html += `
+            <li class="mui-table-view mui-media">
+                <div class="page__bd">
+                    <div class="weui-tab">
+                        <div class="weui-tab__panel">
+                            <div class="weui-form-preview">
+                                <div class="weui-form-preview__hd">
+                                    <div class="weui-form-preview__item">
+                                        <label class="weui-form-preview__label">订单金额</label>
+                                        <em class="weui-form-preview__value">${item.total}</em>
+                                    </div>
+                                </div>
+                                <div class="weui-form-preview__bd">
+                                    <div class="weui-form-preview__item">
+                                        <label class="weui-form-preview__label">课程名称</label>
+                                        <span class="weui-form-preview__value">${item.subject.title}</span>
+                                    </div>
+                                    <div class="weui-form-preview__item">
+                                        <label class="weui-form-preview__label">购买时间</label>
+                                        <span class="weui-form-preview__value">${item.createtime_text}</span>
+                                    </div>
+                                    <div class="weui-form-preview__item">
+                                        <label class="weui-form-preview__label">课程简介</label>
+                                        <span class="weui-form-preview__value">${item.subject.content}</span>
+                                    </div>
+                                </div>
+                                <div class="weui-form-preview__ft">
+                                    <!-- <div class="weui-form-preview__btn weui-form-preview__btn_default">已评价</div> -->
+                                    <a class="weui-form-preview__btn weui-form-preview__btn_default"
+                                        href="{:url('home/business/comment')}?subid=${item.subject.id}">评价</a>
+                                    <a class="weui-form-preview__btn weui-form-preview__btn_primary"
+                                        href="{:url('home/index/info')}?subid=${item.subid}">立即查看</a>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </li>
+            `
+        }
+
+        // 渲染页面
+        $("#list").append(html)
+    }
+</script>

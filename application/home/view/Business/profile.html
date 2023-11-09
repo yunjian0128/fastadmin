@@ -1,0 +1,100 @@
+<title>修改个人资料</title>
+<link rel="stylesheet" href="/assets/home/css/profile.css">
+<link rel="stylesheet" href="/assets/home/plugin/city/css/city-picker.css">
+<script src="/assets/home/plugin/city/js/city-picker.data.min.js"></script>
+<script src="/assets/home/plugin/city/js/city-picker.min.js"></script>
+
+<body>
+    <div class="user">
+        <div class="avatar wow fadeInUp">
+            <img src="{$business.avatar_text}" />
+        </div>
+    </div>
+
+    <form class="mui-input-group" method="post" enctype="multipart/form-data">
+        <div class="mui-input-row">
+            <label>昵称</label>
+            <input type="text" class="mui-input-clear" name="nickname" value="{$business.nickname}"
+                placeholder="请输入昵称" />
+        </div>
+        <div class="mui-input-row">
+            <label>手机号码</label>
+            <input type="text" class="mui-input-clear" name="mobile" value="{$business.mobile}" placeholder="请输入手机号码" />
+        </div>
+        <div class="mui-input-row">
+            <label>邮箱</label>
+            <input type="email" class="mui-input-clear" name="email" value="{$business.email}" placeholder="请输入邮箱" />
+        </div>
+        <div class="mui-input-row">
+            <label>密码</label>
+            <input type="password" class="mui-input-password" name="password" placeholder="请输入密码" />
+        </div>
+        <div class="mui-input-row">
+            <label>性别</label>
+            <select name="gender">
+                <option value="0" {$business.gender=='0' ? 'selected' : '' }>保密</option>
+                <option value="1" {$business.gender=='1' ? 'selected' : '' }>男</option>
+                <option value="2" {$business.gender=='2' ? 'selected' : '' }>女</option>
+            </select>
+        </div>
+        <div class="mui-input-row region">
+            <label>地区</label>
+            <div class="citypicker">
+                <input id="city" type="text" data-toggle="city-picker" name="region" readonly />
+                <input type="hidden" id="code" name="code">
+            </div>
+        </div>
+
+        <input type="file" class="form-control" id="avatar" name="avatar" style="display: none;" />
+
+        <div class="mui-button-row">
+            <button type="submit" class="mui-btn mui-btn-primary">确认</button>
+            <button type="button" class="mui-btn mui-btn-danger" onclick="history.go(-1)">返回</button>
+        </div>
+    </form>
+
+    <!-- 底部 -->
+    {include file="Common/menu" /}
+</body>
+
+<script>
+    $('#city').citypicker({
+        province: "{$business.province_text}",
+        city: "{$business.city_text}",
+        district: "{$business.district_text}"
+    });
+
+    //城市地区的更新事件
+    $("#city").on("cp:updated", function () {
+        //获取到城市联动的元素
+        var citypicker = $(this).data("citypicker");
+        var code = citypicker.getCode("district") || citypicker.getCode("city") || citypicker.getCode("province");
+        $("#code").val(code);
+    });
+
+    //选择头像
+    $('.avatar').click(function () {
+        $('#avatar').click()
+    })
+
+    //给Input元素绑定一个改变的事件
+    $('#avatar').change(function () {
+        //将拿到的图片，转换为本地的图片结构，进行显示
+        // console.log($(this)[0].files[0])
+
+        //选择的图片
+        var file = $(this)[0].files[0]
+
+        //创建一个文件读取器对象
+        var reader = new FileReader()
+
+        //让这个对象去读取上面的文件
+        reader.readAsDataURL(file)
+
+        //绑定一个事件，读取成功后拿到结果的事件
+        reader.onload = function (ev) {
+            //把base64的数据 渲染上去
+            $(".avatar img").attr('src', ev.target.result)
+        }
+    })
+</script>

@@ -1,0 +1,77 @@
+<title>邮箱验证</title>
+<link rel="stylesheet" href="/assets/home/css/profile.css">
+
+<body>
+    <div class="user">
+        <div class="avatar wow fadeInUp">
+            <img src="{$business.avatar_text}" />
+        </div>
+    </div>
+
+    <form class="mui-input-group" method="post" enctype="multipart/form-data">
+        <div class="mui-input-row">
+            <label>邮箱</label>
+            <input type="text" name="email" value="{$business.email}" class="mui-input-clear" placeholder="请输入邮箱"
+                required disabled />
+        </div>
+
+        <div class="mui-input-row">
+            <label>验证码</label>
+            <input type="text" name="code" class="mui-input-clear" placeholder="请输入验证码" required />
+        </div>
+
+
+        <div class="mui-button-row">
+            <button type="submit" class="mui-btn mui-btn-primary">确认</button>
+            <button type="button" class="mui-btn mui-btn-danger" onclick="history.go(-1)">返回</button>
+            <button type="button" id="send" class="mui-btn mui-btn-success">发送邮件</button>
+        </div>
+    </form>
+
+    <!-- 底部 -->
+    {include file="Common/menu" /}
+</body>
+
+<script>
+    var sec = 60
+    var T
+
+    $("#send").click(async function () {
+        //发送ajax
+        $.ajax({
+            type: 'post',
+            url: `{:url('home/business/email')}`,
+            data: { action: 'send' },
+            dataType: 'json',
+            success: function (success) {
+                //轻提醒
+                mui.toast(success.msg, { duration: 3000 })
+
+                //发送成功
+                if (success.code == 1) {
+                    //倒计时
+                    $("#send").html(sec)
+                    $("#send").attr('disabled', true)
+                    T = setInterval(autoplay, 1000)
+                }
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    })
+
+    function autoplay() {
+        var num = $("#send").html()
+        num = parseInt(num)
+
+        if (num <= 0) {
+            //停止定时器
+            clearInterval(T)
+            $("#send").removeAttr('disabled')
+            $("#send").html('重新发送验证码')
+        } else {
+            $('#send').html(num - 1)
+        }
+    }
+</script>

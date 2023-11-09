@@ -1,0 +1,63 @@
+﻿.user {
+    width: 100%;
+    padding: 40px 0px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(#0173de, #4ea9f5);
+    color: white;
+}
+
+.user .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user .nickname {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.user .login {
+    width: 120px;
+    text-align: center;
+    color: #fff;
+    background-color: #4ea9f5;
+    margin-top: 20px;
+    font-size: 15px;
+    padding: .5em .2em;
+    border-radius: 100px;
+}
+
+/* 菜单 */
+.menulist {
+    width: 100%;
+}
+
+.menulist .item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    width: auto;
+    padding: 10px 20px;
+    border-bottom: 10px solid #eaeaea;
+    font-size: 16px;
+    box-shadow: 0 0 10px 0px #DDD;
+    color: #123;
+}
+
+.menulist .item img {
+    height: 16px;
+    width: 16px;
+}

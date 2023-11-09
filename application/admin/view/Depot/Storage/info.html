@@ -1,0 +1,99 @@
+<div class="panel panel-default panel-intro">
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover table-nowrap">
+            {if($row.supplier)}
+            <tr>
+                <td>{:__('Code')}</td>
+                <td>{$row.code|htmlentities}</td>
+                <td>{:__('Supplierid')}</td>
+                <td>{$row.supplier.name|htmlentities}</td>
+            </tr>
+            <tr>
+                <td>{:__('Mobile')}</td>
+                <td>{$row.supplier.mobile|htmlentities}</td>
+                <td>{:__('Type')}</td>
+                <td>{$row.type_text|htmlentities}</td>
+            <tr>
+                <td>{:__('Amount')}</td>
+                <td>{$row.amount|htmlentities}</td>
+                <td>{:__('Status')}</td>
+                <td>{$row.status_text|htmlentities}</td>
+            </tr>
+            <tr>
+                {if($row.adminid)}
+                <td>{:__('Adminid')}</td>
+                <td>{$row.admin.nickname|htmlentities}</td>
+                {/if}
+                {if($row.reviewerid)}
+                <td>{:__('Reviewerid')}</td>
+                <td>{$row.reviewer.nickname|htmlentities}</td>
+                {/if}
+            </tr>
+            <tr>
+                <td>{:__('Remark')}</td>
+                <td>{$row.remark|htmlentities}</td>
+                <td>{:__('Address')}</td>
+                <td>{$row.supplier.address_text|htmlentities}</td>
+            </tr>
+            <tr>
+                <td>{:__('Screatetime')}</td>
+                <td>{$row.createtime_text|htmlentities}</td>
+            </tr>
+            {else /}
+            <tr>
+                <td>{:__('Code')}</td>
+                <td>{$row.code|htmlentities}</td>
+                <td>{:__('Type')}</td>
+                <td>{$row.type_text|htmlentities}</td>
+            </tr>
+            <tr>
+                <td>{:__('Amount')}</td>
+                <td>{$row.amount|htmlentities}</td>
+                <td>{:__('Status')}</td>
+                <td>{$row.status_text|htmlentities}</td>
+            </tr>
+            <tr>
+                {if($row.adminid)}
+                <td>{:__('Adminid')}</td>
+                <td>{$row.admin.nickname|htmlentities}</td>
+                {/if}
+                {if($row.reviewerid)}
+                <td>{:__('Reviewerid')}</td>
+                <td>{$row.reviewer.nickname|htmlentities}</td>
+                {/if}
+            </tr>
+            <tr>
+                <td>{:__('Screatetime')}</td>
+                <td>{$row.createtime|htmlentities}</td>
+                <td>{:__('Remark')}</td>
+                <td>{$row.remark|htmlentities}</td>
+            </tr>
+            {/if}
+
+        </table>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover table-nowrap">
+            <tr>
+                <th>ID</th>
+                <th>{:__('Proname')}</th>
+                <th>{:__('Unitid')}</th>
+                <th>{:__('Proprice')}</th>
+                <th>{:__('Proamount')}</th>
+                <th>{:__('Prototal')}</th>
+                <th>{:__('Typeid')}</th>
+            </tr>
+            {foreach $productData as $item}
+            <tr>
+                <td>{$item.product.id}</td>
+                <td>{$item.product.name}</td>
+                <td>{$item.product.unit.name}</td>
+                <td>{$item.price}</td>
+                <td>{$item.nums}</td>
+                <td>{$item.total}</td>
+                <td>{$item.product.category.name}</td>
+            </tr>
+            {/foreach}
+        </table>
+    </div>
+</div>

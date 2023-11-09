@@ -1,0 +1,48 @@
+<form class="form-horizontal form-ajax" role="form" data-toggle="validator" method="POST">
+
+    <!-- 供应商名称 -->
+    <div class="form-group">
+        <label for="name" class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="name" data-rule="required" class="form-control" name="row[name]" placeholder="{:__('Name')}"
+                type="text" value="">
+        </div>
+    </div>
+
+    <!-- 供应商手机号码 -->
+    <div class="form-group">
+        <label for="mobile" class="control-label col-xs-12 col-sm-2">{:__('Mobile')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" class="form-control" id="mobile" name="row[mobile]" data-rule="required;mobile"
+                placeholder="{:__('Mobile')}" />
+        </div>
+    </div>
+
+    <!-- 供应商地区 -->
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">{:__('Region')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class='control-relative'>
+                <input id="region" class="form-control" data-toggle="city-picker" type="text">
+                <input type="hidden" name="row[code]" id="region-code">
+            </div>
+        </div>
+    </div>
+
+    <!-- 供应商详细地址 -->
+    <div class="form-group">
+        <label for="address" class="control-label col-xs-12 col-sm-2">{:__('Address')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input id="address" data-rule="required" class="form-control" name="row[address]"
+                placeholder="{:__('Address')}" type="text" value="">
+        </div>
+    </div>
+
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>
