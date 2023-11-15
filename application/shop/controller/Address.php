@@ -33,6 +33,7 @@ class Address extends Controller
     public function index()
     {
         if ($this->request->isPost()) {
+
             // 找出当前用户的地址
             $address = $this->AddressModel->where(['busid' => $this->business['id']])->select();
 

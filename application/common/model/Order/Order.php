@@ -22,7 +22,8 @@ class Order extends Model
 
     // 追加属性
     protected $append = [
-        'status_text'
+        'status_text',
+        'createtime_text',
     ];
 
     // 订单状态数据
@@ -48,6 +49,16 @@ class Order extends Model
         $value = $value ? $value : (isset($data['status']) ? $data['status'] : '');
         $list = $this->statuslist();
         return isset($list[$value]) ? $list[$value] : '';
+    }
+
+    // 下单时间的获取器
+    public function getCreatetimeTextAttr($value, $data)
+    {
+        $createtime = $data['createtime'];
+        if (empty($createtime)) {
+            return '';
+        }
+        return date("Y-m-d H:i", $createtime);
     }
 
     // 关联物流

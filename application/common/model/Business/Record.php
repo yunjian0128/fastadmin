@@ -34,4 +34,10 @@ class Record extends Model
 
         return date('Y-m-d H:i', $createtime);
     }
+
+    // 联表查询用户
+    public function business()
+    {
+        return $this->belongsTo('app\common\model\Business\Business', 'busid', 'id', [], 'LEFT')->setEagerlyType(0);
+    }
 }

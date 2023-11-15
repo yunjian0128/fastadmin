@@ -16,6 +16,7 @@ class Order extends Controller
         $this->OrderModel = model('Order.Order');
         $this->OrderProductModel = model('Order.Product');
         $this->RecordModel = model('Business.Record');
+        $this->ExpressModel = model('Express');
 
         $busid = $this->request->param('busid', 0, 'trim');
 
@@ -30,14 +31,15 @@ class Order extends Controller
     public function index()
     {
         if ($this->request->isPost()) {
+            $busid = $this->request->param('busid', 0, 'trim');
             $page = $this->request->param('page', 1, 'trim');
             $status = $this->request->param('status', 0, 'trim');
             $limit = 8;
 
-            //偏移量
+            // 偏移量
             $offset = ($page - 1) * $limit;
 
-            $where = ['busid' => $this->business['id']];
+            $where = ['busid' => $busid];
 
             if ($status != 0) {
                 $where['status'] = $status;
@@ -49,6 +51,13 @@ class Order extends Controller
                 ->limit($offset, $limit)
                 ->select();
 
+            // 遍历订单数据
+            foreach ($list as $item) {
+                $product = $this->OrderProductModel->with(['products'])->where(['orderid' => $item['id']])->find();
+                $item['proname'] = isset($product['products']['name']) ? $product['products']['name'] : '未知商品';
+                $item['thumb_text'] = isset($product['products']['thumb_text']) ? $product['products']['thumb_text'] : '';
+            }
+
             if ($list) {
                 $this->success('返回订单数据', null, $list);
                 exit;
@@ -59,8 +68,7 @@ class Order extends Controller
         }
     }
 
-
-    //下单
+    // 下单
     public function add()
     {
         if ($this->request->isPost()) {
@@ -69,7 +77,7 @@ class Order extends Controller
             $addrid = $this->request->param('addrid', 0, 'trim');
             $remark = $this->request->param('remark', '', 'trim');
 
-            //先判断用户是否存在
+            // 先判断用户是否存在
             $business = $this->BusinessModel->find($busid);
 
             if (!$business) {
@@ -77,7 +85,7 @@ class Order extends Controller
                 exit;
             }
 
-            //判断是否有购物车记录
+            // 判断是否有购物车记录
             $cart = $this->CartModel->with(['product'])->where(['cart.id' => ['in', $cartids]])->select();
 
             if (!$cart) {
@@ -97,7 +105,7 @@ class Order extends Controller
                 exit;
             }
 
-            //判断商品的库存是否充足
+            // 判断商品的库存是否充足
             foreach ($cart as $item) {
                 // 商品库存
                 $stock = isset($item['product']['stock']) ? $item['product']['stock'] : 0;
@@ -109,7 +117,7 @@ class Order extends Controller
                 }
             }
 
-            //先判断余额是否充足
+            // 先判断余额是否充足
             $total = $this->CartModel->where(['id' => ['in', $cartids]])->sum('total');
 
             $UpdateMoney = bcsub($business['money'], $total);
@@ -135,7 +143,7 @@ class Order extends Controller
             $this->CartModel->startTrans();
 
 
-            //订单表
+            // 订单表
             $OrderData = [
                 'code' => build_code("FA"),
                 'busid' => $busid,
@@ -152,7 +160,7 @@ class Order extends Controller
                 exit;
             }
 
-            //订单商品表
+            // 订单商品表
             $OrderProductData = [];
             $ProductData = [];
 
@@ -165,14 +173,14 @@ class Order extends Controller
                     'total' => $item['total'],
                 ];
 
-                //更新商品的库存
+                // 更新商品的库存
                 $stock = isset($item['product']['stock']) ? $item['product']['stock'] : 0;
 
-                //更新后的库存
+                // 更新后的库存
                 $UpdateStock = bcsub($stock, $item['nums']);
                 $UpdateStock = $UpdateStock <= 0 ? 0 : $UpdateStock;
 
-                //组装数据
+                // 组装数据
                 $ProductData[] = [
                     'id' => $item['proid'],
                     'stock' => $UpdateStock
@@ -187,7 +195,7 @@ class Order extends Controller
                 exit;
             }
 
-            //更新商品库存
+            // 更新商品库存
             $ProductStatus = $this->ProductModel->isUpdate(true)->saveAll($ProductData);
 
             if ($ProductStatus === FALSE) {
@@ -197,7 +205,7 @@ class Order extends Controller
                 exit;
             }
 
-            //用户表更新余额
+            // 用户表更新余额
             $BusinessData = [
                 'id' => $busid,
                 'money' => $UpdateMoney
@@ -213,7 +221,7 @@ class Order extends Controller
                 exit;
             }
 
-            //消费记录
+            // 消费记录
             $RecordData = [
                 'total' => "-$total",
                 'content' => "购物商品花费余额为：￥$total 元",
@@ -231,7 +239,7 @@ class Order extends Controller
                 exit;
             }
 
-            //购物车表执行删除语句
+            // 购物车表执行删除语句
             $CartStatus = $this->CartModel->where(['id' => ['in', $cartids]])->delete();
 
             if ($CartStatus === FALSE) {
@@ -264,6 +272,90 @@ class Order extends Controller
                 $this->success('下单成功', '/order/index');
                 exit;
             }
+        }
+    }
+
+    // 订单详细信息
+    public function info()
+    {
+        // 如果有Post请求
+        if ($this->request->isPost()) {
+
+            // 获得订单ID
+            $orderid = $this->request->param('orderid', 0, 'trim');
+
+            // 判断订单是否存在
+            $order = $this->OrderModel->find($orderid);
+
+            if (!$order) {
+                $this->error('订单不存在');
+                exit;
+            }
+
+            // 查询客户姓名
+            $business = $this->BusinessModel->find($order['busid']);
+
+            // 查询订单的联系人信息
+            $address = $this->AddressModel->find($order['businessaddrid']);
+
+            // 查询订单的商品信息
+            $product = $this->OrderProductModel->with(['products'])->where(['orderid' => $order['id']])->find();
+
+            // 查询物流公司
+            $express = $this->ExpressModel->find($order['expressid']);
+
+            // 组装数据
+            $order['busname'] = isset($business['nickname']) ? $business['nickname'] : '未知用户';
+            $order['address'] = isset($address['region_text']) ? $address['region_text'] . '-' . $address['address'] : '未知地址';
+            $order['address_status'] = isset($address['status']) ? $address['status'] : 0;
+            $order['mobile'] = isset($address['mobile']) ? $address['mobile'] : '未知手机号';
+            $order['consignee'] = isset($address['consignee']) ? $address['consignee'] : '未知联系人';
+            $order['proname'] = isset($product['products']['name']) ? $product['products']['name'] : '未知商品';
+            $order['thumb_text'] = isset($product['products']['thumb_text']) ? $product['products']['thumb_text'] : '';
+            $order['price'] = isset($product['price']) ? $product['price'] : 0;
+            $order['pronum'] = isset($product['pronum']) ? $product['pronum'] : 0;
+            $order['total'] = isset($product['total']) ? $product['total'] : 0;
+            $order['expressname'] = isset($express['name']) ? $express['name'] : '未知物流公司';
+
+            $this->success('返回订单数据', null, $order);
+        }
+    }
+
+    // 取消订单
+    public function cancel()
+    {
+        // 如果有Post请求
+        if ($this->request->isPost()) {
+
+            // 获得客户ID
+            $busid = $this->request->param('busid', 0, 'trim');
+
+            // 判断用户是否存在
+            $business = $this->BusinessModel->find($busid);
+
+            if (!$business) {
+                $this->error('用户不存在');
+                exit;
+            }
+
+            // 获得订单ID
+            $orderid = $this->request->param('orderid', 0, 'trim');
+
+            // 判断订单是否存在
+            $order = $this->OrderModel->find($orderid);
+            if (empty($order)) {
+                $this->error('订单不存在');
+                exit;
+            }
+
+            // 订单表 订单商品表 商品表 用户表 消费记录表
+            // 开启事务
+            $this->OrderModel->startTrans();
+            $this->ProductModel->startTrans();
+            $this->BusinessModel->startTrans();
+            $this->RecordModel->startTrans();
+
+            // 
         }
     }
 }

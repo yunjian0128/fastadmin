@@ -386,6 +386,37 @@ class Business extends Controller
                 }
             }
         }
+    }
+
+    // 消费记录
+    public function record()
+    {
+        // 判断是否有Ajax请求
+        if ($this->request->isPost()) {
+
+            // 接收用户id
+            $id = $this->request->param('busid', 0, 'trim');
+
+            // 查询用户信息
+            $business = $this->BusinessModel->find($id);
+
+            if (!$business) {
+                $this->error('用户不存在');
+                exit;
+            }
+
+            // 查询消费记录
+            $list = model('common/Business/Record')->where(['busid' => $id])->order('createtime DESC')->paginate(10);
+
+            // 返回消费数据
+            if ($list) {
+                $this->success('返回消费数据', null, $list);
+                exit;
+            } else {
+                $this->error('暂无更多消费数据');
+                exit;
+            }
+        }
 
     }
 }
