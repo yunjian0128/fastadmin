@@ -33,7 +33,6 @@ class Privateseainfo extends Backend
 
         // 回访表
         $this->model = model('Business.Visit');
-
         $this->ReceiveModel = model('Business.Receive');
     }
 
@@ -41,7 +40,6 @@ class Privateseainfo extends Backend
     public function index()
     {
         $ids = $this->request->param('ids', 0, 'trim');
-
         $row = $this->BusinessModel->find($ids);
 
         if (!$row) {
@@ -58,11 +56,10 @@ class Privateseainfo extends Backend
     // 回访列表
     public function visit($ids = null)
     {
-        //设置过滤方法
+        // 设置过滤方法
         $this->request->filter(['strip_tags']);
 
         if ($this->request->isAjax()) {
-
             if ($this->request->request('keyField')) {
                 return $this->selectpage();
             }
@@ -75,7 +72,7 @@ class Privateseainfo extends Backend
                 ->where('busid', $ids)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
-                ->count(); //查询总数
+                ->count(); 
 
             $list = $this->model
                 ->with(['admin', 'business'])
@@ -83,7 +80,7 @@ class Privateseainfo extends Backend
                 ->where('busid', $ids)
                 ->order($sort, $order)
                 ->limit($offset, $limit)
-                ->select(); //查询数据
+                ->select(); 
 
             $result = array("total" => $total, "rows" => $list);
 
@@ -175,7 +172,7 @@ class Privateseainfo extends Backend
     // 申请列表
     public function receive($ids = null)
     {
-        //设置过滤方法
+        // 设置过滤方法
         $this->request->filter(['strip_tags']);
 
         if ($this->request->isAjax()) {
@@ -209,3 +206,5 @@ class Privateseainfo extends Backend
         return $this->view->fetch();
     }
 }
+
+?>

@@ -27,13 +27,39 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {
                             checkbox: true
                         },
-                        { field: 'id', title: 'ID' },
-                        { field: 'code', title: __('Code'), operate: 'LIKE', table: table, class: 'autocontent', formatter: Table.api.formatter.content },
-                        { field: 'business.nickname', title: __('Busid'), operate: 'LIKE' },
-                        { field: 'amount', title: __('Amount'), operate: 'BETWEEN' },
-                        { field: 'express.name', title: __('Expressid') },
+                        { 
+                            field: 'id', 
+                            title: 'ID' 
+                        },
+                        { 
+                            field: 'code', 
+                            title: __('Code'), 
+                            operate: 'LIKE', 
+                            table: table, 
+                            class: 'autocontent', 
+                            formatter: Table.api.formatter.content 
+                        },
+                        { 
+                            field: 'business.nickname', 
+                            title: __('Busid'), 
+                            operate: 'LIKE' 
+                        },
+                        { 
+                            field: 'amount', 
+                            title: __('Amount'), 
+                            operate: 'BETWEEN' 
+                        },
+                        { 
+                            field: 'express.name', 
+                            title: __('Expressid') 
+                        },
                         {
-                            field: 'expresscode', title: __('Expresscode'), operate: 'LIKE', table: table, class: 'autocontent', formatter: function (value) {
+                            field: 'expresscode', 
+                            title: __('Expresscode'), 
+                            operate: 'LIKE', 
+                            table: table, 
+                            class: 'autocontent', 
+                            formatter: function (value) {
                                 if (!value) {
                                     return '-';
                                 }
@@ -42,10 +68,27 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                             }
                         },
 
-                        { field: 'status', title: __('Status'), searchList: { "0": __('未支付'), "1": __('已支付'), "2": __('已发货'), "3": __('已收货'), "4": __('已完成'), "-1": __('仅退款'), "-2": __('退款退货'), "-3": __('售后中'), "-4": __('退货成功'), "-5": __('退货失败') }, operate: 'LIKE', formatter: Table.api.formatter.status },
-                        { field: 'createtime', title: __('Createtime'), operate: 'RANGE', addclass: 'datetimerange', autocomplete: false, formatter: Table.api.formatter.datetime },
+                        { 
+                            field: 'status', 
+                            title: __('Status'), 
+                            searchList: { "0": __('未支付'), "1": __('已支付'), "2": __('已发货'), "3": __('已收货'), "4": __('已完成'), "-1": __('仅退款'), "-2": __('退款退货'), "-3": __('售后中'), "-4": __('退货成功'), "-5": __('退货失败') }, 
+                            operate: 'LIKE', 
+                            formatter: Table.api.formatter.status 
+                        },
+                        { 
+                            field: 'createtime', 
+                            title: __('Createtime'), 
+                            operate: 'RANGE', 
+                            addclass: 'datetimerange', 
+                            autocomplete: false, 
+                            formatter: Table.api.formatter.datetime 
+                        },
                         {
-                            field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate,
+                            field: 'operate', 
+                            title: __('Operate'), 
+                            table: table, 
+                            events: Table.api.events.operate, 
+                            formatter: Table.api.formatter.operate,
                             buttons: [
                                 {
                                     name: 'info',
@@ -63,7 +106,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                                     icon: 'fa fa-leaf',
                                     visible: function (row) {
 
-                                        if (row.status == 1 || row.status == 2) {
+                                        if (row.status == 1) {
                                             return true
                                         }
                                         return false
@@ -118,6 +161,11 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 }
             });
 
+            Controller.api.bindevent();
+        },
+
+        // 删除
+        del: function () {
             Controller.api.bindevent();
         },
 

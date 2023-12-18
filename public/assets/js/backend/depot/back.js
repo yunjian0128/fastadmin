@@ -69,7 +69,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         operate: 'LIKE'
                     },
                     {
-                        field: 'mobile',
+                        field: 'business.mobile',
                         title: __('Phone'),
                         operate: 'LIKE'
                     },

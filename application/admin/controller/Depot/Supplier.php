@@ -181,6 +181,7 @@ class Supplier extends Backend
 
         // 地区数据回显
         $row['regionCode'] = $row['district'] ?: ($row['city'] ?: $row['province']);
+        
         // 将数据赋值给模板
         $this->view->assign('row', $row);
 
@@ -214,3 +215,5 @@ class Supplier extends Backend
         }
     }
 }
+
+?>

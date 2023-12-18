@@ -34,12 +34,38 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 // 渲染的数据部分
                 columns: [
                     { checkbox: true },
-                    { field: 'id', title: 'ID', operate: false, sortable: true },
-                    { field: 'nickname', title: __('Nickname') },
-                    { field: 'source.name', title: __('Source') },
-                    { field: 'gender', title: __('Gender'), searchList: { "0": __('保密'), "1": __('男'), "2": __('女') }, formatter: Table.api.formatter.normal },
-                    { field: 'deal', title: __('Deal'), searchList: { "0": __('未成交'), "1": __('已成交') }, formatter: Table.api.formatter.normal },
-                    { field: 'auth', title: __('Auth'), searchList: { "0": __('未认证'), "1": __('已认证') }, formatter: Table.api.formatter.normal },
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        operate: false,
+                        sortable: true
+                    },
+                    {
+                        field: 'nickname',
+                        title: __('Nickname')
+                    },
+                    {
+                        field: 'source.name',
+                        title: __('Source')
+                    },
+                    {
+                        field: 'gender',
+                        title: __('Gender'),
+                        searchList: { "0": __('保密'), "1": __('男'), "2": __('女') },
+                        formatter: Table.api.formatter.normal
+                    },
+                    {
+                        field: 'deal',
+                        title: __('Deal'),
+                        searchList: { "0": __('未成交'), "1": __('已成交') },
+                        formatter: Table.api.formatter.normal
+                    },
+                    {
+                        field: 'auth',
+                        title: __('Auth'),
+                        searchList: { "0": __('未认证'), "1": __('已认证') },
+                        formatter: Table.api.formatter.normal
+                    },
                     {
                         field: 'operate',
                         title: __('Operate'),

@@ -66,7 +66,8 @@ define([
                         { checkbox: true },
                         { field: 'id', title: 'ID', operate: false },
                         { field: 'name', title: __('Name') },
-                        { field: 'flag', title: __('Flag'), searchList: { "0": __('下架'), "1": __('上架') }, formatter: Table.api.formatter.flag },
+                        { field: 'status', title: __('ProductStatus'), searchList: { "0": __('下架'), "1": __('上架') }, formatter: Table.api.formatter.status },
+                        { field: 'flag', title: __('Flag'), searchList: { "1": __('新品'), "2": __('热销'), "3": __('推荐') }, formatter: Table.api.formatter.flag },
                         { field: 'stock', title: __('Stock') },
                         { field: 'category.name', title: __('Category') },
                         { field: 'unit.name', title: __('Unit') },
@@ -219,7 +220,7 @@ define([
                         { field: 'business.nickname', title: __('BusinessNickname') },
                         { field: 'express.name', title: __('Expressid') },
                         { field: 'expresscode', title: __('Expresscode') },
-                        { field: 'status', title: __('Status') },
+                        { field: 'status', title: __('OrderStatus') },
                         {
                             field: 'createtime',
                             title: __('CreateTime'),

@@ -47,7 +47,7 @@ define(['jquery',
                             title: __('Thumbs'),
                             formatter: Table.api.formatter.image
                         },
-                        { field: 'status', title: __('Status'), searchList: { "0": __('下架'), "1": __('上架') }, formatter: Table.api.formatter.flag },
+                        { field: 'status', title: __('Status'), searchList: { "0": __('下架'), "1": __('上架') }, formatter: Table.api.formatter.status },
                         { field: 'flag', title: __('Flag'), searchList: { "1": __('新品'), "2": __('热销'), "3": __('推荐') }, formatter: Table.api.formatter.flag },
                         { field: 'stock', title: __('Stock') },
                         { field: 'price', title: __('Price') },

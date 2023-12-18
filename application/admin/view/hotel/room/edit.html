@@ -1,0 +1,82 @@
+<form id="add-form" class="form-horizontal form-ajax" role="form" data-toggle="validator" method="POST">
+
+    <!-- 房间名称 -->
+    <div class="form-group">
+        <label for="name" class="control-label col-xs-12 col-sm-2">{:__('Name')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" class="form-control" id="name" name="row[name]" data-rule="required;name"
+                value="{$row.name}" placeholder="{:__('Name')}" />
+        </div>
+    </div>
+
+    <!-- 房间价格 -->
+    <div class="form-group">
+        <label for="price" class="control-label col-xs-12 col-sm-2">{:__('Price')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="number" min="0" class="form-control" id="price" name="row[price]" data-rule="required"
+                value="{$row.price}" placeholder="{:__('Price')}" />
+        </div>
+    </div>
+
+    <!-- 房间描述 -->
+    <div class="form-group">
+        <label for="content" class="control-label col-xs-12 col-sm-2">{:__('Content')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea class="form-control editor" id="content" name="row[content]"
+                data-rule="required">{$row.content}</textarea>
+        </div>
+    </div>
+
+    <!-- 房间标签（输入值为多个短语） -->
+    <div class="form-group">
+        <label for="flag" class="control-label col-xs-12 col-sm-2">{:__('Flag')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" class="form-control" id="flag" name="row[flag]" data-rule="required" value="{$row.flag}"
+                placeholder="{:__('如有多个值，请使用逗号分隔')}" />
+        </div>
+    </div>
+
+    <!-- 房间数量 -->
+    <div class="form-group">
+        <label for="total" class="control-label col-xs-12 col-sm-2">{:__('Total')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="number" min="0" class="form-control" id="total" name="row[total]" data-rule="required"
+                value="{$row.total}" placeholder="{:__('Total')}" />
+        </div>
+    </div>
+
+    <!-- 房间图片 -->
+    <div class="form-group">
+        <label for="thumb" class="control-label col-xs-12 col-sm-2">{:__('Thumb')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group">
+                <!-- 上传路径 -->
+                <input id="thumb" class="form-control" size="50" name="row[thumb]" type="textarea" data-rule="required"
+                    value="{$row.thumb}" />
+
+                <!-- 按钮 -->
+                <div class="input-group-addon no-border no-padding">
+                    <span><button type="button" id="faupload-thumb" class="btn btn-danger faupload"
+                            data-input-id="thumb" data-mimetype="image/*" data-multiple="true"
+                            data-preview-id="p-thumb"><i class="fa fa-upload"></i>
+                            {:__('Upload')}</button></span>
+                    <span><button type="button" id="fachoose-thumb" class="btn btn-primary fachoose"
+                            data-input-id="thumb" data-mimetype="image/*" data-multiple="true"><i
+                                class="fa fa-list"></i> {:__('Choose')}</button></span>
+                </div>
+                <span class="msg-box n-right" for="thumb"></span>
+            </div>
+            <ul class="row list-inline faupload-preview" id="p-thumb"></ul>
+        </div>
+    </div>
+
+    <!-- 提交按钮 -->
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+
+</form>

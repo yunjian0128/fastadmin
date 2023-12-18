@@ -64,36 +64,36 @@
         district: "{$business.district_text}"
     });
 
-    //城市地区的更新事件
+    // 城市地区的更新事件
     $("#city").on("cp:updated", function () {
-        //获取到城市联动的元素
+
+        // 获取到城市联动的元素
         var citypicker = $(this).data("citypicker");
         var code = citypicker.getCode("district") || citypicker.getCode("city") || citypicker.getCode("province");
         $("#code").val(code);
     });
 
-    //选择头像
+    // 选择头像
     $('.avatar').click(function () {
         $('#avatar').click()
     })
 
-    //给Input元素绑定一个改变的事件
+    // 给Input元素绑定一个改变的事件
     $('#avatar').change(function () {
-        //将拿到的图片，转换为本地的图片结构，进行显示
-        // console.log($(this)[0].files[0])
 
-        //选择的图片
+        // 将拿到的图片，转换为本地的图片结构，进行显示
+        // 选择的图片
         var file = $(this)[0].files[0]
 
-        //创建一个文件读取器对象
+        // 创建一个文件读取器对象
         var reader = new FileReader()
 
-        //让这个对象去读取上面的文件
+        // 让这个对象去读取上面的文件
         reader.readAsDataURL(file)
 
-        //绑定一个事件，读取成功后拿到结果的事件
+        // 绑定一个事件，读取成功后拿到结果的事件
         reader.onload = function (ev) {
-            //把base64的数据 渲染上去
+            // 把base64的数据 渲染上去
             $(".avatar img").attr('src', ev.target.result)
         }
     })

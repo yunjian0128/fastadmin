@@ -4,8 +4,6 @@ namespace app\shop\controller;
 
 use think\Controller;
 
-// 引入FastAdmin自带的一个邮箱发送类
-
 /**
  * 用户收货地址接口
  */
@@ -17,7 +15,6 @@ class Address extends Controller
 
         $this->BusinessModel = model('Business.Business');
         $this->AddressModel = model('Business.Address');
-
         $busid = $this->request->param('busid', '0', 'trim');
 
         // 查询
@@ -69,11 +66,12 @@ class Address extends Controller
                 }
             }
 
-            //开启事务
+            // 开启事务
             $this->AddressModel->startTrans();
 
-            //判断是否选择了默认收货地址
+            // 判断是否选择了默认收货地址
             if ($status == '1') {
+
                 // 直接去更新覆盖，将已有的数据变成0
                 $AddressStatus = $this->AddressModel->where(['busid' => $this->business['id']])->update(['status' => '0']);
 
@@ -83,7 +81,7 @@ class Address extends Controller
                 }
             }
 
-            //插入数据
+            // 插入数据
             $result = $this->AddressModel->validate('common/Business/Address')->save($params);
 
             if ($result === FALSE) {
@@ -103,7 +101,6 @@ class Address extends Controller
     {
         if ($this->request->isPost()) {
             $params = $this->request->param();
-
             $id = $this->request->param('id', 0, 'trim');
             $code = $this->request->param('code', '', 'trim');
             $status = $this->request->param('status', '0', 'trim');
@@ -120,9 +117,10 @@ class Address extends Controller
                 exit;
             }
 
-            //判断是否有地区数据
+            // 判断是否有地区数据
             if (!empty($code)) {
-                //查询省市区的地区码出来
+
+                // 查询省市区的地区码出来
                 $parent = model('Region')->where(['code' => $code])->value('parentpath');
 
                 if (!empty($parent)) {
@@ -133,12 +131,13 @@ class Address extends Controller
                 }
             }
 
-            //开启事务
+            // 开启事务
             $this->AddressModel->startTrans();
 
-            //判断是否选择了默认收货地址
+            // 判断是否选择了默认收货地址
             if ($status == '1') {
-                //直接去更新覆盖，将已有的数据变成0
+
+                // 直接去更新覆盖，将已有的数据变成0
                 $AddressStatus = $this->AddressModel->where(['busid' => $this->business['id']])->update(['status' => '0']);
 
                 if ($AddressStatus === FALSE) {
@@ -147,7 +146,7 @@ class Address extends Controller
                 }
             }
 
-            //编辑数据
+            // 编辑数据
             $result = $this->AddressModel->validate('common/Business/Address')->isUpdate(true)->save($params);
 
             if ($result === FALSE) {
@@ -167,7 +166,6 @@ class Address extends Controller
     {
         if ($this->request->isPost()) {
             $params = $this->request->param();
-
             $id = $this->request->param('id', 0, 'trim');
 
             $where = [
@@ -194,7 +192,7 @@ class Address extends Controller
         }
     }
 
-    //查询收货地址
+    // 查询收货地址
     public function info()
     {
         if ($this->request->isPost()) {
@@ -217,3 +215,5 @@ class Address extends Controller
         }
     }
 }
+
+?>

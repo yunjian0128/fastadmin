@@ -90,7 +90,7 @@ class Category extends Backend
             $result = $this->model->validate('common/Subject/Category')->save($data);
 
             // 添加失败
-            if (!$result) {
+            if ($result === FALSE) {
                 $this->error($this->model->getError());
                 exit;
             }
@@ -141,7 +141,7 @@ class Category extends Backend
             $result = $this->model->validate('common/Subject/Category')->isUpdate(true)->save($data);
 
             // 更新失败
-            if (!$result) {
+            if ($result === FALSE) {
                 $this->error($this->model->getError());
                 exit;
             }
@@ -177,7 +177,7 @@ class Category extends Backend
         $result = $this->model->destroy($ids);
 
         // 删除失败
-        if (!$result) {
+        if ($result === FALSE) {
             $this->error($this->model->getError());
             exit;
         }
@@ -187,3 +187,5 @@ class Category extends Backend
         exit;
     }
 }
+
+?>

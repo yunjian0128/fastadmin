@@ -88,11 +88,13 @@ class Recyclebin extends Backend
 
         // 过滤
         $avatarList = array_filter($avatarList);
-
         $result = $this->model->onlyTrashed()->destroy($id, true);
 
-        if ($result) {
-
+        if ($result === FALSE) {
+            $this->error($this->model->getError());
+            exit;
+        } else {
+    
             // 批量删除用户图片
             foreach ($avatarList as $val) {
                 $src = substr($val, 1);
@@ -100,8 +102,7 @@ class Recyclebin extends Backend
             }
 
             $this->success('删除成功');
-        } else {
-            $this->error($this->model->getError());
+            exit;
         }
     }
 
@@ -124,10 +125,10 @@ class Recyclebin extends Backend
 
         $result = $this->model->onlyTrashed()->where($wheres)->update(['deletetime' => null]);
 
-        if ($result) {
-            $this->success('还原成功');
-        } else {
+        if ($result === FALSE) {
             $this->error($this->model->getError());
+        } else {
+            $this->success('还原成功');
         }
     }
 }

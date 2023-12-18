@@ -68,9 +68,6 @@ class Recyclebin extends Backend
                 // 获取表格所提交的参数
                 list($where, $sort, $order, $offset, $limit) = $this->buildparams();
 
-                // var_dump($sort);
-                // exit;
-
                 // 获取数据总数
                 $total = $this->model
                     ->onlyTrashed()
@@ -92,14 +89,8 @@ class Recyclebin extends Backend
                 exit;
             }
 
-            // var_dump($list);
-            // exit;
-
             // 组装数据
             $result = array("total" => $total, "rows" => $list);
-
-            // var_dump($result);
-            // exit;
 
             // 返回数据
             return json($result);
@@ -110,9 +101,6 @@ class Recyclebin extends Backend
     // 恢复
     public function restore($ids = NULL, $action = NULL)
     {
-        // var_dump($ids);
-        // var_dump($action);
-        // exit;
         // 判断是哪个表格
         if ($action == 'product') {
 
@@ -129,9 +117,6 @@ class Recyclebin extends Backend
 
         // 根据id判断数据是否存在
         $rows = $this->model->withTrashed()->whereIn('id', $ids)->select();
-
-        // var_dump($ids);
-        // exit;
 
         if (!$rows) {
             $this->error(__('No Results were found'));
@@ -204,3 +189,5 @@ class Recyclebin extends Backend
         $this->success('真实删除成功');
     }
 }
+
+?>

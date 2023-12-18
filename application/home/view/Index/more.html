@@ -1,11 +1,12 @@
-<title>评论</title>
+<title>课程评论</title>
 <link rel="stylesheet" href="/assets/home/plugin/mescroll/mescroll.min.css" />
 <link rel="stylesheet" href="/assets/home/css/details.css" />
 
 <script src="/assets/home/plugin/mescroll/mescroll.min.js"></script>
 
 <body>
-    <div class="title">用户评论</div>
+    <!-- 顶部 -->
+    {include file="Common/back" /}
 
     <div id="mescroll" class="mescroll">
         <ul class="mui-table-view" id="list"></ul>
@@ -16,6 +17,11 @@
 </body>
 
 <script>
+    $(document).ready(function () {
+        // 选择具有 "title" 类的 div 元素，并将其文本内容设置为自定义值
+        $(".mui-title").text("课程评论");
+    });
+
     // 课程id
     var subid = "{$subid}"
 

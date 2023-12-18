@@ -38,7 +38,6 @@ class Back extends Backend
         $this->StorageModel = model('Depot.Storage');
         $this->StorageProductModel = model('Depot.StorageProduct');
 
-
         // 获取所有的退货状态        
         $this->view->assign("statusList", $this->model->getStatusList());
     }
@@ -112,9 +111,7 @@ class Back extends Backend
             }
 
             $BackData['amount'] = $order['amount'];
-
             $BackData['status'] = 0;
-
             $BackData['adminid'] = $this->auth->id;
 
             // 查询地址
@@ -161,19 +158,19 @@ class Back extends Backend
                 exit;
             }
 
-            if ($BackStatus && $BackProductStatus) {
-
-                // 提交事务
-                $this->model->commit();
-                $this->BackProductModel->commit();
-                $this->success('添加退货单成功');
-                exit;
-            } else {
+            if ($BackStatus === FALSE || $BackProductStatus === FALSE) {
 
                 // 回滚事务
                 $this->model->rollback();
                 $this->BackProductModel->rollback();
                 $this->error('添加退货单失败');
+                exit;
+            } else {
+
+                // 提交事务
+                $this->model->commit();
+                $this->BackProductModel->commit();
+                $this->success('添加退货单成功');
                 exit;
             }
         }
@@ -185,7 +182,6 @@ class Back extends Backend
     // 编辑退货单
     public function edit($ids = null)
     {
-
         // 判断退货单是否存在
         $row = $this->model->find($ids);
 
@@ -296,9 +292,7 @@ class Back extends Backend
         ];
 
         $addrid = model('Business.Address')->where($AddressWhere)->value('id');
-
         $row['addrid'] = $addrid;
-
         $AddressData = $this->AddressModel->where('busid', $row['busid'])->select();
 
         // 查询退货单商品
@@ -337,10 +331,10 @@ class Back extends Backend
         // 软删除
         $status = $this->model->destroy($ids);
 
-        if ($status) {
-            $this->success('删除退货单成功');
-        } else {
+        if ($status == FALSE) {
             $this->error('删除退货单失败');
+        } else {
+            $this->success('删除退货单成功');
         }
     }
 
@@ -635,7 +629,6 @@ class Back extends Backend
     // 获得订单详情
     public function order()
     {
-
         // 判断是否有Ajax请求
         if ($this->request->isAjax()) {
 
@@ -681,3 +674,5 @@ class Back extends Backend
         }
     }
 }
+
+?>

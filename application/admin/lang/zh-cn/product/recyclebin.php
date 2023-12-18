@@ -11,6 +11,7 @@ return [
     'Category' => '商品分类',
     'Createtime' => '创建时间',
     'Deletetime' => '删除时间',
+    'ProductStatus' => '商品状态',
 
     // 商品订单回收站
     'Code' => '订单编号',
@@ -18,6 +19,6 @@ return [
     'Amount' => '订单金额',
     'Expressid' => '物流公司',
     'Expresscode' => '物流单号',
-    'Status' => '订单状态',
+    'OrderStatus' => '订单状态',
 ];
 ?>

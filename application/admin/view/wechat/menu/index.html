@@ -12,6 +12,32 @@
         font-size: 12px;
     }
 </style>
+
+
+<style data-render="darktheme">
+    body.darktheme .mobile-menu-preview {
+        border-color: #222;
+    }
+
+    body.darktheme .weixin-content, body.darktheme .no-weixin-content {
+        background-color: #262626;
+        border: 1px solid #262626;
+    }
+
+    body.darktheme #menu-content {
+        background-color: #2d2d2d;
+        border: 1px solid #404040;
+    }
+
+    body.darktheme .keytitle {
+        background-color: #222;
+    }
+
+    body.darktheme .mobile-menu-preview .menu-list {
+        filter: invert(1) hue-rotate(180deg);
+    }
+</style>
+
 <div class="panel panel-default panel-intro">
     {:build_heading()}
 
@@ -28,7 +54,7 @@
                         <div class="weixin-body">
                             <div class="weixin-content" style="display:none">
                                 <div class="item-info">
-                                    <form id="form-item" class="form-item" data-value="">
+                                    <form id="form-item" class="form-item" novalidate data-value="">
                                         <div class="item-head">
                                             <h4 id="current-item-name">添加子菜单</h4>
                                             <div class="item-delete"><a href="javascript:;" id="item_delete">删除菜单</a></div>
@@ -71,10 +97,10 @@
         <div class="sub-menu-box" style="display:none;">
             <ul class="sub-menu-list">
                 <%if(typeof first['sub_button']!='undefined'){%>
-                    <%for(var j=0; j< first['sub_button'].length; j++){%>
-                    <%var second=first['sub_button'][j];%>
-                    <li id="sub-menu-<%=j%>" class="sub-menu-item" data-type="<%=second['type']%>" data-key="<%=second['key']%>" data-name="<%=second['name']%>" data-url="<%=second['url']%>" data-appid="<%=second['appid']%>" data-pagepath="<%=second['pagepath']%>"><a href="javascript:;"> <i class="weixin-icon sort-gray"></i><span class="sub-title"><%=second['name']%></span></a></li>
-                    <%}%>
+                <%for(var j=0; j< first['sub_button'].length; j++){%>
+                <%var second=first['sub_button'][j];%>
+                <li id="sub-menu-<%=j%>" class="sub-menu-item" data-type="<%=second['type']%>" data-key="<%=second['key']%>" data-name="<%=second['name']%>" data-url="<%=second['url']%>" data-appid="<%=second['appid']%>" data-pagepath="<%=second['pagepath']%>"><a href="javascript:;"> <i class="weixin-icon sort-gray"></i><span class="sub-title"><%=second['name']%></span></a></li>
+                <%}%>
                 <%}%>
                 <li class="add-sub-item <%if(typeof first['sub_button']!='undefined' && first['sub_button'].length>=5){%>hidden<%}%>"><a href="javascript:;" title="添加子菜单"><span class=" "><i class="weixin-icon add-gray"></i></span></a></li>
             </ul>
@@ -90,7 +116,7 @@
     <dl>
         <dt id="current-item-option"><span class="is-sub-item <%=first?'hidden':''%>">子</span>菜单标题：</dt>
         <dd>
-            <div class="input-box"><input id="item_title" name="name" type="text" value="<%=name%>"></div>
+            <div class="input-box"><input id="item_title" name="name" class="form-control" type="text" value="<%=name%>"></div>
         </dd>
     </dl>
     <%if(!hasChild){%>
@@ -109,7 +135,7 @@
             <dl>
                 <dt>页面地址：</dt>
                 <dd>
-                    <div class="input-box"><input type="text" name="url" value="<%=url%>"></div>
+                    <div class="input-box"><input type="text" name="url" class="form-control" value="<%=url%>"></div>
                 </dd>
             </dl>
         </div>
@@ -134,19 +160,19 @@
             <dl>
                 <dt>小程序ID：</dt>
                 <dd>
-                    <div class="input-box"><input type="text" id="appid" name="appid" placeholder="在小程序后台获取" value="<%=appid%>"></div>
+                    <div class="input-box"><input type="text" id="appid" name="appid" class="form-control" placeholder="在小程序后台获取" value="<%=appid%>"></div>
                 </dd>
             </dl>
             <dl>
                 <dt>小程序页面路径：</dt>
                 <dd>
-                    <div class="input-box"><input type="text" id="pagepath" name="pagepath" placeholder="小程序页面路径" value="<%=pagepath%>"></div>
+                    <div class="input-box"><input type="text" id="pagepath" name="pagepath" class="form-control" placeholder="小程序页面路径" value="<%=pagepath%>"></div>
                 </dd>
             </dl>
             <dl>
                 <dt>页面地址：</dt>
                 <dd>
-                    <div class="input-box"><input type="text" name="url" placeholder="页面地址，当不支持小程序时会跳转此页面" value="<%=url%>"></div>
+                    <div class="input-box"><input type="text" name="url" class="form-control" placeholder="页面地址，当不支持小程序时会跳转此页面" value="<%=url%>"></div>
                 </dd>
             </dl>
         </div>

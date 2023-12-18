@@ -1,0 +1,44 @@
+<form id="refund-form" class="form-horizontal" role="form" data-toggle="validator" method="POST" action="">
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">客户退货原因:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-refundreason" readonly class="form-control" rows="5"
+                cols="50">{$row.refundreason}</textarea>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">退货状态</label>
+        <div class="col-xs-12 col-sm-8">
+            <select id="c-status" class="form-control selectpicker" name="status" disabled>
+                <option value="-1" {$row.status==-1 ? 'selected' : '' }>仅退款</option>
+                <option value="-2" {$row.status==-2 ? 'selected' : '' }>退货退款</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-2">是否同意退货：</label>
+        <div class="col-xs-12 col-sm-8">
+            <select id="c-refund" class="form-control selectpicker" name="row[refund]">
+                <option value="0">不同意退货</option>
+                <option value="1">同意退货</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" id="examinereason">
+        <label class="control-label col-xs-12 col-sm-2">不同意退货原因:</label>
+        <div class="col-xs-12 col-sm-8">
+            <textarea id="c-examinereason" class="form-control" rows="5" name="row[examinereason]" cols="50"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

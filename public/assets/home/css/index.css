@@ -30,6 +30,7 @@ body {
   -webkit-align-items: center;
   align-items: center;
 }
+
 .swiper-slide a {
   height: 240px;
 }
@@ -51,6 +52,7 @@ body {
   height: 49px;
   line-height: 49px;
 }
+
 .mui-content .imgs {
   height: 92px;
 }
@@ -64,12 +66,14 @@ body {
 .mui-table-view:before {
   height: 0;
 }
+
 .title {
   background-color: #efeff4;
   height: 35px;
   line-height: 35px;
   text-align: center;
 }
+
 .more {
   line-height: 60px;
   text-align: center;
@@ -77,6 +81,6 @@ body {
   padding-bottom: 50px;
 }
 
-.mui-table-view.mui-grid-view .mui-table-view-cell{
-  padding:15px 0 0 14px;
+.mui-table-view.mui-grid-view .mui-table-view-cell {
+  padding: 15px 0 0 14px;
 }

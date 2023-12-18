@@ -17,7 +17,7 @@ class Back extends Validate
         'phone' => ['require'],
         'amount' => ['require'],
         'status' => ['require', 'in:0,1,2,3,-1'],
-        'adminid' => ['require'],
+        // 'adminid' => ['require'],
     ];
 
     /**
@@ -34,7 +34,7 @@ class Back extends Validate
         'amount.require' => '总价必填',
         'status.require' => '退货状态必填',
         'status.in' => '退货状态未知',
-        'adminid.require' => '销售员必填'
+        // 'adminid.require' => '销售员必填'
     ];
 
     /**

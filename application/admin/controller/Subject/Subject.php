@@ -198,7 +198,7 @@ class Subject extends Backend
         $result = $this->model->destroy($ids);
 
         if ($result === false) {
-            $this->error('删除课程失败');
+            $this->error($this->model->getError());
             exit;
         } else {
             $this->success('删除课程成功');

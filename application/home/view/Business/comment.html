@@ -1,8 +1,8 @@
-<title>购买完成</title>
+<title>课程评价</title>
 <link rel="stylesheet" href="/assets/home/css/comment.css">
 
 <body>
-    <!-- 头部 -->
+    <!-- 顶部 -->
     {include file="Common/back" /}
 
     <img src="{$subject.thumbs_text}" style="width:100%;">
@@ -23,10 +23,14 @@
 
     <!-- 底部 -->
     {include file="Common/menu" /}
-
 </body>
 
 <script>
+    $(document).ready(function () {
+        // 选择具有 "title" 类的 div 元素，并将其文本内容设置为自定义值
+        $(".mui-title").text("课程评价");
+    });
+
     // 获取文本域
     var textarea = $('.weui-textarea');
     var counter = $('.weui-textarea-counter');
@@ -34,6 +38,7 @@
     counter.text(length + '/200');
     textarea.on('input', function () {
         length = $(this).val().length;
+
         // 剩余字符/总字符
         counter.text(length + '/200');
     });

@@ -34,8 +34,15 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 // 渲染的数据部分
                 columns: [
                     { checkbox: true },
-                    { field: 'id', title: 'ID', operate: false, sortable: true },
-                    { field: 'name', title: __('Name') },
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        sortable: true
+                    },
+                    { 
+                        field: 'name',
+                        title: __('Name')
+                    },
                     {
                         field: 'operate',
                         title: __('Operate'),

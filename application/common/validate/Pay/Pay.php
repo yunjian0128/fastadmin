@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\validate\pay;
+namespace app\common\validate\Pay;
 
 use think\Validate;
 
@@ -18,8 +18,8 @@ class Pay extends Validate
         'reurl' => ['require'],
         'callbackurl' => ['require'],
         'status' => ['require','number', 'in:0,1,2'],
-        // 'wxcode' => ['require'],
-        'zfbcode' => ['require'],
+        'wxcode' => ['require'],
+        // 'zfbcode' => ['require'],
     ];
 
     /**
@@ -43,8 +43,8 @@ class Pay extends Validate
         'status.require' => '订单状态必须填写',
         'status.number' => '订单状态的类型有误',
         'status.in' => '订单状态的值有误',
-        // 'wxcode' => '微信收款码必须填写',
-        'zfbcode' => '支付宝收款码必须填写'
+        'wxcode' => '微信收款码必须填写',
+        // 'zfbcode' => '支付宝收款码必须填写'
     ];
 
 }

@@ -40,7 +40,6 @@ class Business extends Model
         'city_text',
         'district_text',
         'createtime_text',
-        'gender_text'
     ];
 
     // 获取器【地区】
@@ -118,20 +117,6 @@ class Business extends Model
 
         //查询中文字
         return date('Y-m-d H:i:s', $createtime);
-    }
-
-    // 获取器【性别】
-    public function getGenderTextAttr($value, $data)
-    {
-        $gender = empty($data['gender']) ? '' : trim($data['gender']);
-
-        $list = [
-            '0' => '保密',
-            '1' => '男',
-            '2' => '女'
-        ];
-
-        return isset($list[$gender]) ? $list[$gender] : '';
     }
 
     // 关联客户来源

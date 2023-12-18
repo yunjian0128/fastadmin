@@ -4,7 +4,6 @@ namespace app\admin\controller\Product;
 
 use app\common\controller\Backend;
 
-
 class Product extends Backend
 {
     // 当前模型
@@ -111,9 +110,6 @@ class Product extends Backend
             // 接收row前缀的数据，并接收为数组类型
             $parmas = $this->request->param('row/a');
 
-            // var_dump($parmas);
-            // exit;
-
             // 组装数据
             $data = [
                 'name' => $parmas['name'],
@@ -130,7 +126,7 @@ class Product extends Backend
             $result = $this->model->validate('common/Product/Product')->save($data);
 
             // 添加失败
-            if (!$result) {
+            if ($result === FALSE) {
                 $this->error($this->model->getError());
                 exit;
             }
@@ -183,11 +179,9 @@ class Product extends Backend
 
             // 更新数据
             $result = $this->model->validate('common/Product/Product')->isUpdate(true)->save($data);
-            // var_dump($result);
-            // exit;
 
             // 更新失败
-            if (!$result) {
+            if ($result === FALSE) {
                 $this->error($this->model->getError());
                 exit;
             }
@@ -205,9 +199,6 @@ class Product extends Backend
                 // 删除的图片 = 旧图片 - 交集
                 $delete_thumbs = array_diff($thumbs_row, $commonthumbs);
 
-                // var_dump($delete_thumbs);
-                // exit;
-
                 foreach ($delete_thumbs as $item) {
 
                     // 判断图片是否存在并删除
@@ -222,9 +213,6 @@ class Product extends Backend
 
         // 将数据赋值给模板
         $this->view->assign('row', $row);
-
-        // var_dump(collection($row)->toArray());
-        // exit;
 
         // 渲染模板
         return $this->view->fetch();
@@ -249,7 +237,7 @@ class Product extends Backend
         $result = $this->model->destroy($ids);
 
         // 删除失败
-        if (!$result) {
+        if ($result === FALSE) {
             $this->error($this->model->getError());
             exit;
         }
@@ -259,3 +247,5 @@ class Product extends Backend
         exit;
     }
 }
+
+?>

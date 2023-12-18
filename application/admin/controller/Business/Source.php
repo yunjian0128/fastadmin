@@ -89,7 +89,8 @@ class Source extends Backend
             $result = $this->model->validate('common/Business/Source')->save($data);
 
             // 添加失败
-            if (!$result) {
+            if ($result === FALSE) {
+
                 // 返回错误信息
                 $this->error($this->model->getError());
                 exit;
@@ -135,7 +136,7 @@ class Source extends Backend
             $result = $this->model->validate('common/Business/Source')->isUpdate(true)->save($data);
 
             // 更新失败
-            if (!$result) {
+            if ($result === FALSE) {
 
                 // 返回错误信息
                 $this->error($this->model->getError());
@@ -147,14 +148,12 @@ class Source extends Backend
             exit;
         }
 
-        // var_dump($ids);
-        // exit;
-
         // 将数据赋值给模板
         $this->view->assign('row', $result);
 
         // 渲染视图
         return $this->view->fetch();
     }
-
 }
+
+?>

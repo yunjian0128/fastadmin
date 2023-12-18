@@ -1,22 +1,42 @@
-<div class="footer">
-    <nav class="footer-bar" style="max-width: 512px;margin: 0 auto;">
-        <div class="tab-item  mui-active">
+<div class="footer" style="z-index: 1000;">
+    <nav class="footer-bar" style="max-width: 512px; margin: 0 auto;">
+        <div class="tab-item mui-active">
             <a href="{:url('home/index/index')}">
                 <span class="mui-icon mui-icon-home"></span>
-                <span class="mui-tab-label">首页</span>
             </a>
         </div>
         <div class="tab-item">
             <a href="{:url('home/index/search')}">
                 <span class="mui-icon mui-icon-search"></span>
-                <span class="mui-tab-label">搜索</span>
             </a>
         </div>
         <div class="tab-item">
             <a href="{:url('/home/business/index')}">
                 <span class="mui-icon mui-icon-contact"></span>
-                <span class="mui-tab-label">我的</span>
             </a>
         </div>
     </nav>
 </div>
+
+<script>
+    // 给footer-bar添加监听事件 
+    // mui('.footer-bar').on('tap', 'a', function (e) {
+    //     // 移除所有的选中样式
+    //     mui('.footer-bar .tab-item').each(function (index, element) {
+    //         element.classList.remove('mui-active');
+    //     });
+    //     // 获取当前点击的元素的href属性
+    //     var href = this.getAttribute('href');
+    //     // 给当前的元素添加选中样式
+    //     // this.parentNode.classList.add('mui-active');
+
+    //     // 跳转当前的url
+    // });
+</script>
+
+<style>
+    .mui-active a {
+        color: #000 !important;
+        font-weight: bolder !important;
+    }
+</style>

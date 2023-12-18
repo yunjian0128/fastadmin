@@ -126,7 +126,7 @@ class Recyclebin extends Backend
         $result = $this->model->onlyTrashed()->whereIn('id', $ids)->update(['deletetime' => NULL]);
 
         if ($result === FALSE) {
-            $this->error('恢复数据失败');
+            $this->error($this->model->getError());
             exit;
         } else {
             $this->success('恢复数据成功');
@@ -231,7 +231,7 @@ class Recyclebin extends Backend
             $result = $this->model->onlyTrashed()->whereIn('id', $ids)->delete(true);
 
             if ($result === FALSE) {
-                $this->error('真实删除失败');
+                $this->error($this->model->getError());
                 exit;
             } else {
                 $this->success('真实删除数据成功');
@@ -243,3 +243,5 @@ class Recyclebin extends Backend
         }
     }
 }
+
+?>

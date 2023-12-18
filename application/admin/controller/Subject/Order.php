@@ -88,12 +88,12 @@ class Order extends Backend
         }
 
         // 删除订单
-        if ($result->destroy($ids)) {
-            $this->success("删除成功");
+        if ($result->destroy($ids) === FALSE) {
+            $this->error($this->model->getError());
         } else {
-            $this->error(__('Delete failed'));
+            $this->success("删除成功");
         }
-
-
     }
 }
+
+?>

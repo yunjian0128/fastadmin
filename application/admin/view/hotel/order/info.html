@@ -1,0 +1,48 @@
+<div class="panel panel-default panel-intro">
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover table-nowrap">
+            <tr>
+                <td>客户：</td>
+                <td>{$row.business.nickname}</td>
+                <td>联系方式：</td>
+                <td>{$row.business.mobile}</td>
+            </tr>
+            <tr>
+                <td>房间名称：</td>
+                <td>{$row.room.name}</td>
+                <td>订单状态：</td>
+                <td>{$row.status_text}</td>
+            </tr>
+            <tr>
+                <td>入住时间：</td>
+                <td>{$row.starttime_text}</td>
+                <td>退房时间：</td>
+                <td>{$row.endtime_text}</td>
+            </tr>
+            <tr>
+                <td>原价：</td>
+                <td>{$row.origin_price}</td>
+                <td>实际支付：</td>
+                <td>{$row.price}</td>
+            </tr>
+            <tr>
+                {if condition="$row.coupon"}
+                <td>优惠券名称：</td>
+                <td>{$row.coupon.title}</td>
+                <td>优惠券折扣：</td>
+                <td>{$row.coupon.rate * 10}折</td>
+                {/if}
+            </tr>
+            <tr>
+                {if condition="$row.comment"}
+                <td>客户评价：</td>
+                <td>{$row.comment}</td>
+                {/if}
+                {if condition="$row.rate"}
+                <td>客户评分：</td>
+                <td>{$row.rate}</td>
+                {/if}
+            </tr>
+        </table>
+    </div>
+</div>

@@ -1,52 +1,14 @@
-<title>课程信息</title>
 <link rel="stylesheet" href="/assets/home/plugin/ckplayer/css/ckplayer.css" />
 <link rel="stylesheet" href="/assets/home/css/details.css" />
 
-<!-- 加载ckplayer视频插件 -->
-<script src="/assets/home/plugin/ckplayer/js/ckplayer.js"></script>
-
-<style>
-    body {
-        position: relative !important;
-    }
-
-    #play {
-        /* width: 100%; */
-        height: 274px !important;
-        line-height: 350px !important;
-    }
-
-    #play img {
-        width: 100px !important;
-        height: 100px !important;
-    }
-
-    #sheet1 {
-        width: 480px !important;
-    }
-
-    .dm {
-        left: 100%;
-        bottom: 150px;
-        color: #FFF;
-        font-size: 22px;
-        line-height: 50px;
-        background-color: rgba(244, 67, 54, 0.9);
-        border-radius: 25px;
-        padding: 0 30px;
-        width: auto;
-        cursor: pointer;
-        display: none;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-</style>
-
 <body>
+    <!-- 顶部 -->
+    {include file="Common/back" /}
+
     <div id="cover">
         <!-- 课程封面 -->
         <img class="cover_bg" src="{$subject.thumbs_text}" />
+
         <!-- 中间播放键 -->
         <div id="play">
             <img src="/assets/home/images/play.png" />
@@ -62,9 +24,11 @@
             <h4 class="name">{$subject.title}</h4>
             <div class="action">
                 {if condition="$subject.like_status"}
+
                 <!-- 已点赞 -->
                 <img id="like" data-status="remove" class="thumbs" src="/assets/home/images/thumbs-up.png" alt="">
                 {else /}
+
                 <!-- 未点赞 -->
                 <img id="like" data-status="add" class="thumbs" src="/assets/home/images/thumbs.png" alt="">
                 {/if}
@@ -73,7 +37,7 @@
         </div>
     </div>
 
-    <div class="title">课程信息</div>
+    <!-- 课程列表 -->
     <table class="list">
         <tr>
             <td>课程名称</td>
@@ -94,7 +58,7 @@
     </table>
 
     <div class="title">课程介绍</div>
-    <div class="mui-table-view content">{$subject.content}</div>
+    <div class="mui-table-view content" style="white-space: pre-line">{$subject.content}</div>
 
     <div class="title">课程章节</div>
     <ul id="chapter" class="mui-table-view">
@@ -154,7 +118,21 @@
 
 </body>
 
+<!-- 加载ckplayer视频插件 -->
+<script src="/assets/home/plugin/ckplayer/js/ckplayer.js"></script>
+
 <script>
+    $(document).ready(function () {
+        // 选择具有 "title" 类的 div 元素，并将其文本内容设置为自定义值
+        $(".mui-title").text("课程信息");
+    });
+
+    var originalContent = `{$subject.content}`;
+    var formattedContent = originalContent.replace(/\n/g, "<br>");
+
+    $(".content").html(formattedContent);
+    console.log(formattedContent);
+
     // 章节id
     var cid = 0;
 
@@ -289,3 +267,41 @@
         })
     })    
 </script>
+
+<style>
+    body {
+        position: relative !important;
+    }
+
+    #play {
+        /* width: 100%; */
+        height: 274px !important;
+        line-height: 350px !important;
+    }
+
+    #play img {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    #sheet1 {
+        width: 480px !important;
+    }
+
+    .dm {
+        left: 100%;
+        bottom: 150px;
+        color: #FFF;
+        font-size: 22px;
+        line-height: 50px;
+        background-color: rgba(244, 67, 54, 0.9);
+        border-radius: 25px;
+        padding: 0 30px;
+        width: auto;
+        cursor: pointer;
+        display: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

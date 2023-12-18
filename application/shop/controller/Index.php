@@ -15,19 +15,19 @@ class Index extends Controller
         $this->CartModel = model('Product.Cart');
     }
 
-    //首页数据
+    // 首页数据
     public function index()
     {
         if ($this->request->isPost()) {
-            //轮播图 - flag = 3 推荐
+
+            // 轮播图 - flag = 3 推荐
             $top = $this->ProductModel->where(['flag' => '3'])->limit(5)->select();
 
-            //分类
+            // 分类
             $type = $this->CategoryModel->limit(8)->select();
 
-            //新品首页
+            // 新品首页
             $news = $this->ProductModel->where(['flag' => '1'])->limit(8)->select();
-
             $data = [
                 'top' => $top,
                 'type' => $type,
@@ -55,7 +55,7 @@ class Index extends Controller
         }
     }
 
-    //商品数据列表
+    // 商品数据列表
     public function list()
     {
         if ($this->request->isPost()) {
@@ -67,26 +67,25 @@ class Index extends Controller
             $keywords = $this->request->param('keywords', '', 'trim');
             $limit = 8;
 
-            //偏移量
+            // 偏移量
             $offset = ($page - 1) * $limit;
 
-            //查询分类名称
+            // 查询分类名称
             $TypeName = $this->CategoryModel->where(['id' => $typeid])->value('name');
             $TypeName = empty($TypeName) ? '全部分类' : $TypeName;
-
             $where = [];
 
-            //关键词不为空
+            // 关键词不为空
             if (!empty($keywords)) {
                 $where['name'] = ['like', "%$keywords%"];
             }
 
-            //分类筛选
+            // 分类筛选
             if ($typeid) {
                 $where['typeid'] = $typeid;
             }
 
-            //标签筛选
+            // 标签筛选
             if ($flag != "0") {
                 $where['flag'] = $flag;
             }
@@ -112,12 +111,11 @@ class Index extends Controller
         }
     }
 
-    //商品信息
+    // 商品信息
     public function product()
     {
         if ($this->request->isPost()) {
             $proid = $this->request->param('proid', 0, 'trim');
-
             $product = $this->ProductModel->with(['category', 'unit'])->find($proid);
 
             if ($product) {
@@ -153,3 +151,5 @@ class Index extends Controller
         }
     }
 }
+
+?>

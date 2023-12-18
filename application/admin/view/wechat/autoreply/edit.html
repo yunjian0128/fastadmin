@@ -5,6 +5,12 @@
         margin-left:0;
     }
 </style>
+<style data-render="darktheme">
+    body.darktheme .keytitle {
+        background-color: #222;
+    }
+</style>
+
 <form id="edit-form" class="form-horizontal form-ajax" role="form" data-toggle="validator" method="POST" action="">
 
     <div class="form-group">
@@ -24,7 +30,7 @@
         <div class="col-xs-12 col-sm-8">
             <div class="clickbox">
                 <input type="hidden" name="row[eventkey]" id="c-eventkey" class="form-control" value="{$row.eventkey}" data-rule="required" readonly />
-                <span class="create-click"><a href="wechat/response/select" id="select-resources"><i class="weixin-icon big-add-gray"></i><strong>选择现有资源</strong></a><div class="keytitle">资源名:{:$response['title']}</div></span>
+                <span class="create-click"><a href="wechat/response/select" id="select-resources"><i class="weixin-icon big-add-gray"></i><strong>选择现有资源</strong></a><div class="keytitle">资源名:{$response.title|default="已删除"}</div></span>
                 <span class="create-click"><a href="wechat/response/add" id="add-resources"><i class="weixin-icon big-add-gray"></i><strong>添加新资源</strong></a></span>
             </div>
         </div>

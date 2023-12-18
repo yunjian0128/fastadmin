@@ -2,7 +2,8 @@
 
 namespace app\admin\controller\Product;
 
-use app\common\controller\Backend; // 引入公共控制器
+// 引入公共控制器
+use app\common\controller\Backend;
 
 /**
  * 订单管理
@@ -48,11 +49,7 @@ class Order extends Backend
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
 
             // 获取数据总数
-            $total = $this->model
-                ->with(['express', 'business'])
-                ->where($where)
-                ->order($sort, $order)
-                ->count();
+            $total = $this->model->count();
 
             // 获取分页数据
             $list = $this->model
@@ -100,7 +97,6 @@ class Order extends Backend
             $this->error('订单不存在');
         }
 
-
         // 处理提交表单
         if ($this->request->isPost()) {
             $params = $this->request->param('row/a');
@@ -136,7 +132,6 @@ class Order extends Backend
             }
         }
 
-
         // 查询物流公司的数据
         $ExpData = model('Express')->column('id,name');
 
@@ -162,7 +157,7 @@ class Order extends Backend
         $result = $this->model->destroy($ids);
 
         if ($result === false) {
-            $this->error('删除失败');
+            $this->error($this->model->getError());
         } else {
             $this->success('删除成功');
         }
@@ -171,7 +166,6 @@ class Order extends Backend
     public function refund($ids = null)
     {
         $ids = $ids ?: $this->request->param('ids', 0, 'trim');
-
         $row = $this->model->find($ids);
 
         if (!$row) {
@@ -186,8 +180,9 @@ class Order extends Backend
             }
 
             // 同意仅退款
-            if ($params['refund'] === '1' && $row['status'] === '-1') {
+            if ($params['refund'] === '1' && ($row['status'] === '-1' || $row['status'] === '-2')) {
                 $BusinessModel = model('Business.Business');
+                $RecordModel = model('Business.Record');
 
                 $business = $BusinessModel->find($row['busid']);
 
@@ -198,6 +193,7 @@ class Order extends Backend
                 // 开启事务
                 $BusinessModel->startTrans();
                 $this->model->startTrans();
+                $RecordModel->startTrans();
 
                 // 更新用户余额
                 $BusinessData = [
@@ -224,19 +220,38 @@ class Order extends Backend
                     $this->error('更新订单状态失败');
                 }
 
-                if ($BusinessStatus === false || $OrderStatus === false) {
-                    $BusinessModel->rollback();
+                // 增加消费记录
+                $RecordData = [
+                    'busid' => $business['id'],
+                    'total' => $row['amount'],
+                    'content' => '购物订单' . $row['code'] . '退款',
+                ];
+
+                $RecordStatus = $RecordModel->validate('common/Business/Record')->save($RecordData);
+
+                if ($RecordStatus === false) {
                     $this->model->rollback();
-                    $this->error('同意退款失败');
+                    $BusinessModel->rollback();
+                    $this->error('增加消费记录失败');
+                }
+
+                // 大判断
+                if ($BusinessStatus === false || $OrderStatus === false || $RecordStatus === false) {
+                    $RecordModel->rollback();
+                    $this->model->rollback();
+                    $BusinessModel->rollback();
+                    $this->error('退款失败');
                 } else {
                     $BusinessModel->commit();
                     $this->model->commit();
-                    $this->success('同意退款成功');
+                    $RecordModel->commit();
+                    $this->success('退款成功');
                 }
             }
 
             // 不同意退货
             if ($params['refund'] === '0') {
+                
                 // 封装数据
                 $data = [
                     'id' => $ids,
@@ -247,14 +262,15 @@ class Order extends Backend
                 $result = $this->model->isUpdate(true)->save($data);
 
                 if ($result === false) {
-                    $this->error();
+                    $this->error($this->model->getError());
                 } else {
-                    $this->success();
+                    $this->success('不同意退货成功');
                 }
             }
 
             // 同意退款退货
             if ($params['refund'] === '1' && $row['status'] === '-2') {
+
                 // 封装数据
                 $data = [
                     'id' => $ids,
@@ -264,9 +280,9 @@ class Order extends Backend
                 $result = $this->model->isUpdate(true)->save($data);
 
                 if ($result === false) {
-                    $this->error();
+                    $this->error($this->model->getError());
                 } else {
-                    $this->success();
+                    $this->success('同意退款退货成功');
                 }
             }
         }
@@ -278,3 +294,5 @@ class Order extends Backend
         return $this->fetch();
     }
 }
+
+?>

@@ -89,7 +89,7 @@ class Category extends Backend
             $result = $this->model->validate('common/Product/Category')->save($data);
 
             // 添加失败
-            if (!$result) {
+            if ($result === FALSE) {
                 $this->error($this->model->getError());
                 exit;
             }
@@ -137,11 +137,9 @@ class Category extends Backend
 
             // 更新数据
             $result = $this->model->validate('common/Product/Category')->isUpdate(true)->save($data);
-            // var_dump($result);
-            // exit;
 
             // 更新失败
-            if (!$result) {
+            if ($result === FALSE) {
                 $this->error($this->model->getError());
                 exit;
             }
@@ -152,7 +150,6 @@ class Category extends Backend
                 // 判断图片是否存在
                 is_file("." . $row['thumb']) && @unlink("." . $row['thumb']);
             }
-
 
             // 更新成功
             $this->success('编辑商品分类成功');
@@ -182,8 +179,6 @@ class Category extends Backend
         }
 
         $thumblist = [];
-        // var_dump($result);
-        // exit;
 
         // 遍历$result
         foreach ($result as $key => $value) {
@@ -192,14 +187,11 @@ class Category extends Backend
             $thumblist[$key] = $value['thumb'];
         }
 
-        // var_dump($thumblist);
-        // exit;
-
         // 删除数据
         $result = $this->model->destroy($ids);
 
         // 删除失败
-        if (!$result) {
+        if ($result === FALSE) {
             $this->error($this->model->getError());
             exit;
         }
@@ -216,3 +208,5 @@ class Category extends Backend
         exit;
     }
 }
+
+?>

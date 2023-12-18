@@ -48,7 +48,6 @@ class Storage extends Backend
 
         // 将列表赋值给模板
         $this->view->assign("typelist", $TypeList);
-        // $this->view->assign("suppliername", $SupplierName);
         $this->view->assign("supplierlist", $SupplierList);
     }
 
@@ -97,7 +96,6 @@ class Storage extends Backend
 
             // 接收添加的商品数据，json字符串转成数组
             $productList = json_decode($params['product'], true);
-            // var_dump($productList);
 
             // 判断是否有商品数据
             if (!$productList) {
@@ -422,7 +420,7 @@ class Storage extends Backend
             $result = $this->model->destroy($ids);
 
             if ($result === FALSE) {
-                $this->error('删除入库单失败');
+                $this->error($this->model->getError());
                 exit;
             } else {
                 $this->success('删除入库单成功');
@@ -468,9 +466,7 @@ class Storage extends Backend
                 $this->success('通过审核成功');
                 exit;
             }
-
         }
-
     }
 
     // 撤销审核
@@ -510,7 +506,6 @@ class Storage extends Backend
                 $this->success('撤销审核成功');
                 exit;
             }
-
         }
     }
 
@@ -639,9 +634,6 @@ class Storage extends Backend
         // 将请求当中的所有参数去除html标签，去掉两边空白
         $this->request->filter(['strip_tags', 'trim']);
 
-        // var_dump($this->request->param());
-        // exit;
-
         // 判断是否有Ajax请求
         if ($this->request->isAjax()) {
             // 获取表格所提交的参数
@@ -696,3 +688,5 @@ class Storage extends Backend
         }
     }
 }
+
+?>

@@ -1,15 +1,15 @@
-<title>微信平台视频付费系统</title>
+<title>智慧云课堂系统</title>
 <link href="/assets/home/css/index.css" rel="stylesheet" />
 <link rel="stylesheet" href="/assets/home/css/swiper-bundle.css">
 <script src="/assets/home/js/swiper-bundle.min.js"></script>
 
 <body>
-    <div class="mui-content">
+    <div class="mui-content" style="margin-top: 20px;">
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
                 {foreach $top as $item}
                 <div class="swiper-slide">
-                    <a href="{:url('home/index/info', ['pid' => $item['id']])}">
+                    <a href="{:url('home/index/info', ['subid' => $item['id']])}">
                         <img src="{$item.thumbs_text}">
                         <p class="mui-slider-title">{$item.title}</p>
                     </a>
@@ -25,11 +25,25 @@
         <ul class="mui-table-view mui-grid-view">
             {foreach $list as $item}
             <li class="mui-table-view-cell mui-media mui-col-xs-6">
-                <a href="{:url('home/index/info', ['pid' => $item['id']])}">
+                <a href="{:url('home/index/info', ['subid' => $item['id']])}">
                     <div class="imgs">
                         <img class="mui-media-object" src="{$item.thumbs_text}">
                     </div>
                     <div class="mui-media-body">{$item.title}</div>
+                    <!-- <div class="Box">
+                        <div class="big-box">
+                            <div class="book-big">
+                                <div class="book-small1"></div>
+                                <div class="book-small2"
+                                    style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                    <img class="mui-media-object" src="{$item.thumbs_text}">
+                                    <div class="mui-media-body">{$item.title}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bar1 bar"></div>
+                        <div class="bar2 bar"></div>
+                    </div> -->
                 </a>
             </li>
             {/foreach}
@@ -47,3 +61,99 @@
         },
     });
 </script>
+<style>
+    .Box {
+        width: 150px;
+        height: 160px;
+        position: relative;
+        z-index: 999;
+    }
+
+    .big-box {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        perspective: 100px;
+        z-index: 999;
+    }
+
+    .book-big {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .book-small1 {
+        width: 10%;
+        height: 100%;
+        background-color: rgba(200, 200, 200, 1);
+        /* 内阴影 */
+        box-shadow: inset 0.15em 0em 0.3em 0.1em rgba(0, 0, 0, 0.08);
+
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+
+        /* 左侧内阴影 */
+        /* -webkit-box-shadow: inset 0px 0px 15px 3px rgba(0, 0, 0, 0.55); */
+
+        /* 左上角圆角 */
+        border-top-left-radius: 0.5em;
+        border-bottom-left-radius: 0.5em;
+
+    }
+
+    .book-small2 {
+        width: 94%;
+        height: 100%;
+        background-color: rgba(200, 200, 200, 1);
+        /* 内阴影 */
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        border-left: none;
+        box-shadow: inset 0em 0em 0.3em 0.2em rgba(0, 0, 0, 0.05);
+        border-top-right-radius: 0.2em;
+        border-bottom-right-radius: 0.2em;
+    }
+
+    /* 放大动画 */
+    .big-box:hover .book-big {
+
+        transform-style: preserve-3d;
+        /* transform: rotateY(10deg); */
+        /* 设置旋转中心 */
+        transform-origin: 0% 50%;
+        /* 旋转中心为左侧中间 */
+        transform: rotateY(-1.5deg) scaleX(0.95);
+    }
+
+    /* 兄弟元素的动作 */
+    .big-box:hover~.bar {
+        transform: scaleX(1.1) scaleY(1.06);
+    }
+
+    .bar {
+        margin-top: 10px;
+        margin-left: 30px;
+        position: absolute;
+        top: 0;
+        transition: all 0.5s ease-in-out;
+    }
+
+    .bar1 {
+        width: 81.5%;
+        height: 92%;
+        background-color: rgba(255, 255, 255, 1);
+        z-index: 998;
+        border-radius: 0.7em;
+    }
+
+    .bar2 {
+        width: 85%;
+        height: 92%;
+        background-color: rgba(200, 200, 200, 1);
+        z-index: 997;
+        border-radius: 0.2em;
+    }
+</style>

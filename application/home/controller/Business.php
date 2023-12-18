@@ -28,6 +28,7 @@ class Business extends Home
         return $this->view->fetch();
     }
 
+    // 个人主页
     public function profile()
     {
         // 判断是否是post提交
@@ -93,9 +94,6 @@ class Business extends Home
                 $data['avatar'] = $success['data'];
             }
 
-            // var_dump($data);
-            // exit;
-
             //更新语句 如果是更新语句，需要给data提供一个主键id的值 这就是更新语句 使用验证器的场景
             $result = $this->BusinessModel->validate('common/Business/Business.profile')->isUpdate(true)->save($data);
 
@@ -128,15 +126,15 @@ class Business extends Home
     // 邮箱验证
     public function email()
     {
-        //加载模型
+        // 加载模型
         $EmsModel = model('common/Ems');
 
-        //是否有ajax请求过来
+        // 是否有ajax请求过来
         if ($this->request->isAjax()) {
             $action = $this->request->param('action', '', 'trim');
 
             if ($action == "send") {
-                //获取用户信息
+                // 获取用户信息
                 $email = isset($this->view->business['email']) ? $this->view->business['email'] : '';
 
                 if (empty($email)) {
@@ -144,16 +142,16 @@ class Business extends Home
                     exit;
                 }
 
-                //生成一个验证码
+                // 生成一个验证码
                 $code = randstr(5);
 
-                //开启事务
+                // 开启事务
                 $EmsModel->startTrans();
 
-                //删除掉之前旧的验证码
+                // 删除掉之前旧的验证码
                 $EmsModel->where(['email' => $email])->delete();
 
-                //把验证码插入到数据库表中
+                // 把验证码插入到数据库表中
                 $data = [
                     'event' => 'auth',
                     'email' => $email,
@@ -161,7 +159,7 @@ class Business extends Home
                     'times' => 0,
                 ];
 
-                //插入数据
+                // 插入数据
                 $ems = $EmsModel->save($data);
 
                 if ($ems === FALSE) {
@@ -169,32 +167,32 @@ class Business extends Home
                     exit;
                 }
 
-                //邮件主题
+                // 邮件主题
                 $name = config('site.name');
                 $subject = "【{$name}】邮箱验证";
 
-                //组装文字信息
+                // 组装文字信息
                 $message = "<div>感谢您的使用，您的邮箱验证码为：<b>$code</b></div>";
 
-                //实例化邮箱验证类
+                // 实例化邮箱验证类
                 $PhpMailer = new Email;
 
-                //邮箱发送有规律，不可以发送关键词
+                // 邮箱发送有规律，不可以发送关键词
                 $result = $PhpMailer
                     ->to($email)
                     ->subject($subject)
                     ->message($message)
                     ->send();
 
-                //检测邮箱发送成功还是失败
+                // 检测邮箱发送成功还是失败
                 if ($result) {
-                    //发送验证码成功
-                    //将事务提交，提交的意思就是让刚刚插入的记录真实存在到数据表中
+                    // 发送验证码成功
+                    // 将事务提交，提交的意思就是让刚刚插入的记录真实存在到数据表中
                     $EmsModel->commit();
                     $this->success('邮件发送成功，请注意查收');
                     exit;
                 } else {
-                    //将刚才插入成功的验证码记录要撤销回滚
+                    // 将刚才插入成功的验证码记录要撤销回滚
                     $EmsModel->rollback();
                     $this->error($PhpMailer->getError());
                     exit;
@@ -202,7 +200,7 @@ class Business extends Home
             }
         }
 
-        //是否有post请求过来
+        // 是否有post请求过来
         if ($this->request->isPost()) {
             $code = $this->request->param('code', '', 'trim');
 
@@ -218,15 +216,15 @@ class Business extends Home
                 exit;
             }
 
-            //开启事务
+            // 开启事务
             $EmsModel->startTrans();
             $this->BusinessModel->startTrans();
 
-            //查询这个验证码是否存在
+            // 查询这个验证码是否存在
             $where = ['email' => $email, 'code' => $code];
             $check = $EmsModel->where($where)->find();
 
-            //如果没找到记录
+            // 如果没找到记录
             if (!$check) {
                 $this->error('您输入的验证码有误，请重新输入');
                 exit;
@@ -363,58 +361,6 @@ class Business extends Home
         return $this->view->fetch();
     }
 
-    // 用户充值
-    public function recharge()
-    {
-        // 获取用户id
-        $busid = $this->view->business['id'];
-
-        // 查询用户余额
-        $business = $this->BusinessModel->where(['id' => $busid])->find();
-        $money = $business->money;
-
-        // 传出数据
-        $this->assign('money', $money);
-        $this->assign('busid', $busid);
-
-        // 判断是否是ajax请求
-        if ($this->request->isPost()) {
-            $recharge = $this->request->param('money', 0, 'trim');
-
-            // 如果recharge为0
-            if ($recharge <= 0) {
-                $this->error('充值金额不能小于0');
-                exit;
-            }
-
-            if ($money <= 0) {
-                $this->error('充值失败');
-                exit;
-            }
-
-            $money += $recharge;
-
-            // 开启事务
-            $this->BusinessModel->startTrans();
-            $RechargeStatus = $this->BusinessModel->isUpdate(true)->save([
-                'id' => $busid,
-                'money' => $money
-            ]);
-
-            if ($RechargeStatus) {
-                $this->BusinessModel->commit();
-                $this->success('充值成功');
-                exit;
-            } else {
-                // 回滚事务
-                $this->BusinessModel->rollback();
-                $this->error('充值失败');
-                exit;
-            }
-        }
-        return $this->view->fetch();
-    }
-
     // 联系我们
     public function contact()
     {
@@ -514,5 +460,206 @@ class Business extends Home
             exit;
         }
         return $this->view->fetch();
+    }
+
+    // 用户充值
+    public function pay()
+    {
+        if($this->request->isPost())
+        {
+            $money = $this->request->param('money', 1, 'trim');
+
+            // 发送一个接口请求出去
+            $host = config('site.cdnurl');
+            $host = trim($host, '/');
+
+            // 完整的请求接口地址
+            $api = $host."/pay/index/create";
+
+            // 订单支付完成后跳转的界面
+            $reurl = $host.'/home/business/notice';
+
+            $callbackurl = $host."/home/business/callback";
+
+            // 携带一个自定义的参数过去 转换为json类型
+            $third = json_encode(['busid' => $this->view->business['id']]);
+
+            // 微信收款码
+            $wxcode = config('site.wxcode');
+            $wxcode = $host.$wxcode;
+
+            // 支付宝收款码
+            $zfbcode = config('site.zfbcode');
+            $zfbcode = $host.$zfbcode;
+
+            // 充值信息
+            $PayData = [
+                'name' => '余额充值',
+                'third' => $third,
+                'originalprice' => $money,
+                
+                // 微信支付
+                'paytype' => 0,
+                'paypage' => 1,
+
+                // 支付宝支付
+                // 'paytype' => 1,
+                // 'paypage' => 2,
+                'reurl' => $reurl,
+                'callbackurl' => $callbackurl,
+                'wxcode' => $wxcode,
+                'zfbcode' => $zfbcode,
+            ];
+
+            // 发起请求
+            $result = httpRequest($api, $PayData);
+            
+            // 有错误
+            if(isset($result['code']) && $result['code'] == 0)
+            {
+                $this->error($result['msg']);
+                exit;
+            }
+            
+            echo $result;
+            exit;
+        }
+        return $this->view->fetch();
+    }
+
+    // 充值成功跳转提醒
+    public function notice()
+    {
+        $this->success('支付成功', url('home/business/pay'));
+        exit;
+    }
+
+    // 充值回调
+    public function callback()
+    {
+        // 判断是否有post请求过来
+        if ($this->request->isPost()) {
+
+            // 获取到所有的数据
+            $params = $this->request->param();
+
+            // 充值的金额
+            $price = isset($params['price']) ? $params['price'] : 0;
+            $price = floatval($price);
+
+            // 第三方参数(可多参数)
+            $third = isset($params['third']) ? $params['third'] : '';
+
+            // json字符串转换数组
+            $third = json_decode($third, true);
+
+            // 从数组获取充值的用户id
+            $busid = isset($third['busid']) ? $third['busid'] : 0;
+
+            // 支付方式
+            $paytype = isset($params['paytype']) ? $params['paytype'] : 0;
+
+            // 支付订单id
+            $payid = isset($params['id']) ? $params['id'] : 0;
+
+            $pay = $this->PayModel->find($payid);
+
+            if(!$pay)
+            {
+                return json(['code' => 0, 'msg' => '支付订单不存在', 'data' => null]);
+            }
+
+            $payment = '';
+
+            switch ($paytype) {
+                case 0:
+                    $payment = '微信支付';
+                    break;
+                case 1:
+                    $payment = '支付宝支付';
+                    break;
+            }
+
+            // 判断充值金额
+            if ($price <= 0) {
+                return json(['code' => 0, 'msg' => '充值金额为0', 'data' => null]);
+            }
+
+            // 加载模型
+            $BusinessModel = model('Business.Business');
+            $RecordModel = model('Business.Record');
+
+            $business = $BusinessModel->find($busid);
+
+            if (!$business) {
+                return json(['code' => 0, 'msg' => '充值用户不存在', 'data' => null]);
+            }
+
+            // 开启事务
+            $BusinessModel->startTrans();
+            $RecordModel->startTrans();
+
+            // 转成浮点类型
+            $money = floatval($business['money']);
+
+            // 余额 + 充值的金额
+            $updateMoney = bcadd($money,$price,2);
+
+            // 封装用户更新的数据
+            $BusinessData = [
+                'id' => $business['id'],
+                'money' => $updateMoney
+            ];
+
+            // 自定义验证器
+            $validate = [
+                [
+                    'money' => ['number','>=:0'],
+                ],
+                [
+                    'money.number' => '余额必须是数字类型',
+                    'money.>=' => '余额必须大于等于0元'
+                ]
+            ];
+
+            $BusinessStatus = $BusinessModel->validate(...$validate)->isUpdate(true)->save($BusinessData);
+
+            if($BusinessStatus === false)
+            {
+                return json(['code' => 0, 'msg' => $BusinessModel->getError(), 'data' => null]);
+            }
+
+            // 封装插入消费记录的数据
+            $RecordData = [
+                'total' => $price,
+                'content' => "{$payment}充值了 $price 元",
+                'busid' => $business['id']
+            ];
+
+            // 插入
+            $RecordStatus = $RecordModel->validate('common/Business/Record')->save($RecordData);
+
+            if($RecordStatus === false)
+            {
+                $BusinessModel->rollback();
+                return json(['code' => 0, 'msg' => $RecordModel->getError(), 'data' => null]);
+            }
+
+            if($BusinessStatus === false || $RecordStatus === false)
+            {
+                $BusinessModel->rollback();
+                $RecordModel->rollback();
+                return json(['code' => 0, 'msg' => '充值失败', 'data' => null]);
+            }else{
+                $BusinessModel->commit();
+                $RecordModel->commit();
+
+                // 订单号：\r\n
+                // 金额:50元
+                // 支付方式：
+                // 时间，
+                return json(['code' => 1, 'msg' => '充值成功', 'data' => null]);
+            }
+        }
     }
 }

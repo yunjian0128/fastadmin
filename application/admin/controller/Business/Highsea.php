@@ -155,7 +155,7 @@ class Highsea extends Backend
     // 客户公海分配管理
     public function recovery($ids = NULL)
     {
-        //将请求当中所有的参数去除html标签，去掉两边空白
+        // 将请求当中所有的参数去除html标签，去掉两边空白
         $this->request->filter(['strip_tags', 'trim']);
 
         // 接收数据
@@ -211,7 +211,6 @@ class Highsea extends Backend
                 $this->error($this->ReceiveModel->getError());
                 exit;
             }
-            // exit;
 
             // 更新客户数据
             $result = $this->model->isUpdate(true)->saveAll($businesslist);
@@ -266,16 +265,14 @@ class Highsea extends Backend
         $result = $this->model->destroy($ids);
 
         // 判断删除是否成功
-        if ($result) {
-            $this->success('删除客户成功');
+        if ($result === false) {
+            $this->success($this->model->getError());
             exit;
         } else {
-            $this->error($this->model->getError());
+            $this->error('删除客户成功');
             exit;
         }
     }
 }
-
-
 
 ?>

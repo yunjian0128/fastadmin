@@ -56,6 +56,7 @@ class Unit extends Backend
 
             // 返回数据
             $result = array("total" => $total, "rows" => $list);
+
             return json($result);
         }
 
@@ -87,7 +88,7 @@ class Unit extends Backend
             $result = $this->model->validate('common/Product/Unit')->save($data);
 
             // 添加失败
-            if (!$result) {
+            if ($result === FALSE) {
                 $this->error($this->model->getError());
                 exit;
             }
@@ -135,7 +136,7 @@ class Unit extends Backend
             $result = $this->model->validate('common/Product/Unit')->isUpdate(true)->save($data);
 
             // 更新失败
-            if (!$result) {
+            if ($result === FALSE) {
                 $this->error($this->model->getError());
                 exit;
             }
@@ -171,7 +172,7 @@ class Unit extends Backend
         $result = $this->model->destroy($ids);
 
         // 删除失败
-        if (!$result) {
+        if ($result === FALSE) {
             $this->error($this->model->getError());
             exit;
         }
@@ -181,3 +182,5 @@ class Unit extends Backend
         exit;
     }
 }
+
+?>

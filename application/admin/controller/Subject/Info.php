@@ -40,6 +40,7 @@ class Info extends Backend
             $this->error('课程不存在');
             exit;
         }
+        
         return $this->view->fetch();
     }
 
@@ -110,8 +111,6 @@ class Info extends Backend
             // 获取表格所提交的参数
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $where = ['subid' => $ids];
-            // var_dump($sort);
-            // exit;
 
             // 表格需要两个参数，total和rows，total为数据总数，rows为分页数据
             // 获取数据总数
@@ -128,10 +127,6 @@ class Info extends Backend
                 ->order($sort, $order)
                 ->limit($offset, $limit)
                 ->select();
-
-            // 打印上一条sql语句
-            // echo $this->model->getLastSql();
-            // exit;
 
             // 组装数据
             $result = ['total' => $total, 'rows' => $list];
@@ -152,8 +147,6 @@ class Info extends Backend
 
         // 判断课程是否存在
         $subject = $this->SubjectModel->find($ids);
-        // var_dump($subject);
-        // exit;
 
         if (!$subject) {
             $this->error(__('No Results were found'));
@@ -173,8 +166,6 @@ class Info extends Backend
             ->where($where)
             ->order($sort, $order)
             ->count();
-        // var_dump($total);
-        // exit;
 
         // 获取分页数据
         $list = $this->model
@@ -182,13 +173,6 @@ class Info extends Backend
             ->order($sort, $order)
             ->limit($offset, $limit)
             ->select();
-
-        // 打印上一条sql语句
-        // echo $this->model->getLastSql();
-        // exit;
-
-        // var_dump(collection($list)->toArray());
-        // exit;
 
         // 组装数据
         $result = ['total' => $total, 'rows' => $list];
@@ -330,3 +314,5 @@ class Info extends Backend
         exit;
     }
 }
+
+?>

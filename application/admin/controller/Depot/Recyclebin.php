@@ -216,7 +216,14 @@ class Recyclebin extends Backend
             }
 
             // 大判断
-            if ($BackStatus && $BackProductStatus) {
+            if ($BackStatus === FALSE && $BackProductStatus === FALSE) {
+
+                // 回滚事务
+                $this->model->rollback();
+                $this->BackProductModel->rollback();
+                $this->error('删除数据失败');
+                exit;
+            } else {
 
                 // 提交事务
                 $this->model->commit();
@@ -229,13 +236,6 @@ class Recyclebin extends Backend
 
                 $this->success('删除数据成功');
                 exit;
-            } else {
-
-                // 回滚事务
-                $this->model->rollback();
-                $this->BackProductModel->rollback();
-                $this->error('删除数据失败');
-                exit;
             }
         } else {
             $this->error('参数错误');
@@ -243,3 +243,5 @@ class Recyclebin extends Backend
         }
     }
 }
+
+?>

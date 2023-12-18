@@ -25,7 +25,7 @@ class Index extends Home
 
     public function index()
     {
-        //按照时间降序查询
+        // 按照时间降序查询
         $top = $this->SubjectModel->order('createtime desc')->limit(5)->select();
         $list = $this->SubjectModel->order('id desc')->limit(8)->select();
 
@@ -34,7 +34,7 @@ class Index extends Home
             'list' => $list
         ];
 
-        //赋值数据到模板中去
+        // 赋值数据到模板中去
         $this->assign($data);
 
         // 渲染一个模板页面 V = View
@@ -61,10 +61,8 @@ class Index extends Home
 
             // 加密密码
             $password = md5($password . $salt);
-            // var_dump($password);
-            // exit;
 
-            //组装数据
+            // 组装数据
             $data = [
                 'mobile' => $mobile,
                 'nickname' => $mobile,
@@ -80,24 +78,24 @@ class Index extends Home
                 // 实名认证
             ];
 
-            //查询出云课堂的渠道来源的ID信息 数据库查询
+            // 查询出云课堂的渠道来源的ID信息 数据库查询
             $data['sourceid'] = model('common/Business/Source')->where(['name' => ['LIKE', "%云课堂%"]])->value('id');
 
-            //执行插入 返回自增的条数
+            // 执行插入 返回自增的条数
             $result = $this->BusinessModel->validate('common/Business/Business')->save($data);
 
             if ($result === FALSE) {
-                //失败
+                // 失败
                 $this->error($this->BusinessModel->getError());
                 exit;
             } else {
-                //注册
+                // 注册
                 $this->success('注册成功', url('home/index/login'));
                 exit;
             }
         }
         // 访问地址：www.fastadmin.com/index.php/home/index/register
-        //渲染模板 application/home/view/Index/register.html
+        // 渲染模板 application/home/view/Index/register.html
         return $this->view->fetch();
     }
 
@@ -112,8 +110,6 @@ class Index extends Home
 
             // 判断手机号是否在数据库中
             $result = $this->BusinessModel->where(['mobile' => $mobile])->find();
-            // var_dump($result);
-            // exit;
 
             if (!$result) {
                 $this->error('用户不存在');
@@ -130,17 +126,14 @@ class Index extends Home
                 exit;
             }
 
-            //保存cookie信息
+            // 保存cookie信息
             $cookie = [
                 'id' => $result['id'],
                 'mobile' => $result['mobile']
             ];
 
-            //存放cookie 关闭浏览器之后自动销毁
+            // 存放cookie 关闭浏览器之后自动销毁
             cookie('business', $cookie);
-
-            // var_dump($result);
-            // exit;
 
             // 跳转页面
             $this->success('登录成功', url('home/business/index'));
@@ -148,14 +141,14 @@ class Index extends Home
 
         }
         // 访问地址：www.fastadmin.com/index.php/home/index/register
-        //渲染模板 application/home/view/Index/register.html
+        // 渲染模板 application/home/view/Index/register.html
         return $this->view->fetch();
     }
 
     // 退出登录
     public function logout()
     {
-        //清除cookie
+        // 清除cookie
         cookie('business', null);
         $this->success('退出成功', url('home/index/index'));
         exit;
@@ -166,7 +159,7 @@ class Index extends Home
     {
         // 先判断是否有ajax请求过来
         if ($this->request->isAjax()) {
-            //接收参数
+            // 接收参数
             $page = $this->request->param('page', 1, 'trim');
             $limit = $this->request->param('limit', 10, 'trim');
             $search = $this->request->param('search', '', 'trim');
@@ -174,14 +167,14 @@ class Index extends Home
             $where = [];
 
             if (!empty($search)) {
-                //模糊查询
+                // 模糊查询
                 $where['title'] = ['LIKE', "%$search%"];
             }
 
-            //查询数据总数
+            // 查询数据总数
             $count = $this->SubjectModel->where($where)->count();
 
-            //偏移量
+            // 偏移量
             $start = ($page - 1) * $limit;
 
             $list = $this->SubjectModel
@@ -195,10 +188,6 @@ class Index extends Home
                 'count' => $count,
                 'list' => $list
             ];
-
-            //打印
-            // var_dump(collection($list)->toArray());
-            // exit;
 
             if (empty($list)) {
                 $this->error('暂无更多数据');
@@ -229,8 +218,6 @@ class Index extends Home
 
         // 查询评论
         $comment = $this->CommentModel->with(['business'])->where(['subid' => $subid])->limit(8)->select();
-        // var_dump(collection($comment)->toArray());
-        // exit;
 
         // 判断是否登录
         $business = $this->auth(false);
@@ -271,7 +258,7 @@ class Index extends Home
     public function like()
     {
         if ($this->request->isAjax()) {
-            //接收参数
+            // 接收参数
             $subid = $this->request->param('subid', 0, 'trim');
             $status = $this->request->param('status', '', 'trim');
 
@@ -280,7 +267,7 @@ class Index extends Home
                 exit;
             }
 
-            //判断是否有登录
+            // 判断是否有登录
             $business = $this->auth(false);
 
             if (!$business) {
@@ -288,7 +275,7 @@ class Index extends Home
                 exit;
             }
 
-            //判断课程是否存在
+            // 判断课程是否存在
             $subject = $this->SubjectModel->where(['id' => $subid])->find();
 
             if (!$subject) {
@@ -298,22 +285,21 @@ class Index extends Home
 
             $likes = empty($subject['likes']) ? [] : explode(',', $subject['likes']);
 
-            //如果在 就说明点过赞 要取消点赞
+            // 如果在 就说明点过赞 要取消点赞
             if (in_array($business['id'], $likes)) {
                 $pos = array_search($business['id'], $likes);
 
-                //删除变量元素
+                // 删除变量元素
                 unset($likes[$pos]);
             } else {
-                //不在，就说明没点过赞，要点赞
                 $likes[] = $business['id'];
             }
 
-            //会怕存在遗漏 去重 保证唯一性
+            // 会怕存在遗漏 去重 保证唯一性
             $likes = array_unique($likes);
             $likes = implode(',', $likes);
 
-            //组装数据更新
+            // 组装数据更新
             $data = [
                 'id' => $subid,
                 'likes' => $likes
@@ -392,10 +378,6 @@ class Index extends Home
             $subid = $this->request->param('subid', 0, 'trim');
             $cid = $this->request->param('cid', 0, 'trim');
 
-            // var_dump($subid);
-            // var_dump($cid);
-            // exit;
-
             // 判断课程是否存在
             $subject = $this->SubjectModel->find($subid);
 
@@ -409,7 +391,7 @@ class Index extends Home
 
             // 章节不存在
             if (!$chapter) {
-                //根据课程找出这个课程的第一个章节
+                // 根据课程找出这个课程的第一个章节
                 $chapter = $this->ChapterModel->where(['subid' => $subid])->order('id asc')->find();
 
                 if (!$chapter) {
@@ -498,9 +480,6 @@ class Index extends Home
             // 判断用户余额是否足够
             $moeny = empty($business['money']) ? 0 : $business['money'];
             $price = empty($subject['price']) ? -1 : $subject['price'];
-            // var_dump($moeny);
-            // var_dump($price);
-            // exit;
 
 
             if ($price < 0) {
@@ -508,7 +487,7 @@ class Index extends Home
                 exit;
             }
 
-            //两个高精度的浮点数相减
+            // 两个高精度的浮点数相减
             $UpdateMoney = bcsub($moeny, $price, 2);
 
             if ($UpdateMoney < 0) {
@@ -590,7 +569,7 @@ class Index extends Home
                 exit;
             } else {
 
-                //提交事务
+                // 提交事务
                 $OrderModel->commit();
                 $BusinessModel->commit();
                 $RecordModel->commit();

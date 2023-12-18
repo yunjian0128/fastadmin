@@ -4,13 +4,11 @@
 
 <script src="/assets/home/plugin/mescroll/mescroll.min.js"></script>
 
-
 <body>
-    <!-- 头部 -->
+    <!-- 顶部 -->
     {include file="Common/back" /}
 
     <!-- 订单 -->
-    <div class="title">我的订单</div>
     <div id="mescroll" class="mescroll">
         <ul class="mui-table-view" id="list"></ul>
     </div>
@@ -20,8 +18,12 @@
 </body>
 
 <script>
-    var busid = "{$business.id}";
+    $(document).ready(function () {
+        // 选择具有 "title" 类的 div 元素，并将其文本内容设置为自定义值
+        $(".mui-title").text("我的订单");
+    });
 
+    var busid = "{$business.id}";
     var mescroll = new MeScroll('mescroll', {
         down: {
             auto: false, // 是否在初始化完毕之后自动执行下拉回调callback; 默认true
@@ -47,6 +49,7 @@
 
     // 下拉触发的回调函数
     function DownCallback() {
+
         // 下拉刷新的回调; 默认重置上拉加载列表为第一页
         mescroll.resetUpScroll()
         $("#list").empty()

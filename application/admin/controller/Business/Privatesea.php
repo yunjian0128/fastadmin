@@ -93,9 +93,6 @@ class Privatesea extends Backend
 
             // 接收row前缀的数据，并接收为数组类型
             $row = $this->request->post('row/a');
-            // var_dump(collection($row)->toArray());
-            // exit;
-
             $salt = randstr();
             $password = md5($row['mobile'] . $salt);
 
@@ -114,9 +111,6 @@ class Privatesea extends Backend
                 'money' => $row['money']
             ];
 
-            // var_dump($row['code']);
-            // exit;
-
             // 选择地区
             if (!empty($row['code'])) {
 
@@ -128,11 +122,9 @@ class Privatesea extends Backend
                 }
 
                 $path = explode(',', $parentpath);
-
                 $province = $path[0] ?? null;
                 $city = $path[1] ?? null;
                 $district = $path[2] ?? null;
-
                 $data['province'] = $province;
                 $data['city'] = $city;
                 $data['district'] = $district;
@@ -226,7 +218,6 @@ class Privatesea extends Backend
                 $province = $path[0] ?? null;
                 $city = $path[1] ?? null;
                 $district = $path[2] ?? null;
-
                 $data['province'] = $province;
                 $data['city'] = $city;
                 $data['district'] = $district;
@@ -245,8 +236,6 @@ class Privatesea extends Backend
         $row['regionCode'] = $row['district'] ?: ($row['city'] ?: $row['province']);
 
         $this->assign('row', $row);
-        // var_dump($row['province']);
-        // exit;
 
         // 渲染页面
         return $this->view->fetch();
@@ -279,7 +268,6 @@ class Privatesea extends Backend
     public function recovery($ids = NULL)
     {
         $ids = !empty($ids) ? explode(',', $ids) : [];
-
         $row = $this->model->column('id');
 
         foreach ($ids as $item) {

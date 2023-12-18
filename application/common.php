@@ -99,7 +99,6 @@ if (!function_exists('cdnurl')) {
     }
 }
 
-
 if (!function_exists('is_really_writable')) {
 
     /**
@@ -556,9 +555,7 @@ EOT;
     }
 }
 
-
-
-//-----------------------------RickyFlex---------------------------//
+//-----------------------------YUNJIAN---------------------------//
 if (!function_exists('randstr')) {
     /**
      * 获得随机字符串
@@ -787,3 +784,109 @@ if (!function_exists('build_code')) {
         return $osn;
     }
 }
+
+if(!function_exists('httpRequest'))
+{
+    function httpRequest($url, $data = null)
+    {
+        if (function_exists('curl_init')) {
+            $curl = curl_init();
+            // 设置请求地址
+            curl_setopt($curl, CURLOPT_URL, $url);
+
+            // 设置http某些配置
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+            curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+
+            // 判断传进来的参数是否不为空
+            if (!empty($data)) {
+                // 设置该请求为POST
+                curl_setopt($curl, CURLOPT_POST, 1);
+                // 把参数带入请求
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+            }
+
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($curl);
+            curl_close($curl);
+            return $output;
+        } else {
+            return false;
+        }
+    }
+}
+
+if (!function_exists('query_express')) {
+    /**
+     * 查询物流信息
+     * @param String $code 物流单号
+     * @return Array  返回物流信息
+     */
+
+    function query_express($code = "")
+    {
+        if (empty($code)) {
+            return false;
+        }
+
+        // 接口购买地址：https://market.aliyun.com/products/57126001/cmapi023201.html
+
+        // 请求地址
+        $url = "https://wdexpress.market.alicloudapi.com/gxali?n=$code";
+
+        // 请求头信息
+        $headers = [];
+        $appcode = "672dfaf3140047259b93779d7d4ada5a";
+        array_push($headers, "Authorization:APPCODE " . $appcode);
+
+
+        // 发起请求
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET"); // 设置GET请求方法
+        curl_setopt($curl, CURLOPT_URL, $url); // 设置请求地址
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); // 设置请求头
+        curl_setopt($curl, CURLOPT_FAILONERROR, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true); // 直接拿到返回值
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        // 取消https的ssl效验
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        // 发起请求
+        $result = curl_exec($curl);
+
+        // 返回请求的状态码
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        if ($httpCode != 200) {
+            return false;
+        }
+
+        // 转换结果
+        list($header, $body) = explode("\r\n\r\n", $result, 2);
+
+        // $body = '{"LogisticCode":"773250575667871","ShipperCode":"STO","Traces":[{"AcceptStation":"[东莞市]【广东东莞虎门四服务点】(0769-33555666)的黄江-黄文(1809823768)已揽收","AcceptTime":"2023-10-25 17:10:55"},{"AcceptStation":"[东莞市]快件已到达【广东东莞虎门集散中心】","AcceptTime":"2023-10-26 02:16:04"},{"AcceptStation":"[东莞市]快件离开【广东东莞虎门集散中心】已发往【广东深圳龙华集散中心】","AcceptTime":"2023-10-26 02:22:59"},{"AcceptStation":"[东莞市]快件离开【广东东莞虎门集散中心】已发往【广东广州转运中心】","AcceptTime":"2023-10-26 02:27:41"},{"AcceptStation":"[广州市]快件已到达【广东广州转运中心】","AcceptTime":"2023-10-26 05:23:14"},{"AcceptStation":"[广州市]快件已到达【广东广州转运中心】","AcceptTime":"2023-10-26 06:21:05"},{"AcceptStation":"[广州市]快件离开【广东广州转运中心】已发往【广东广州南洲公司】","AcceptTime":"2023-10-26 06:27:14"},{"AcceptStation":"[广州市]快件已到达【广东广州南洲公司】咨询电话：020-88811135","AcceptTime":"2023-10-26 14:53:44"},{"AcceptStation":"[广州市]【广东广州南洲公司】的申通小哥(张正大\/13247652215)正在为您派送(可放心接听95089申通专属派送号码)，投诉电话:02088811135","AcceptTime":"2023-10-26 15:03:05"},{"AcceptStation":"快件已被华俊后街韵达快递超市代收，请及时取件。如有取件码问题或找不到包裹等问题，请联系：13247652215，如您未收到此快递，请拨打投诉电话：02088811135! ","AcceptTime":"2023-10-26 16:43:37"},{"AcceptStation":"[驿站]包裹已签收！签收人凭取货码签收，如有问题请联系：韵达超市13247652215，投诉电话：02088811135。起早贪黑不停忙，如有不妥您见谅，好评激励我向上，求个五星暖心房。","AcceptTime":"2023-10-26 19:10:03"}],"State":"3","Success":true,"Courier":"","CourierPhone":"13247652215","updateTime":"2023-10-26 19:10:03","takeTime":"1天1小时59分","Name":"申通快递","Site":"www.sto.cn","Phone":"95543","Logo":"https:\/\/img3.fegine.com\/express\/sto.jpg","Reason":"查询成功"}';
+
+        // 将json字符串转换为数组结构
+        $body = json_decode($body, true);
+
+        // 物流名称
+        $name = isset($body['Name']) ? $body['Name'] : '';
+
+        // 快递员的电话号码
+        $phone = isset($body['CourierPhone']) ? $body['CourierPhone'] : '';
+
+        // 物流信息
+        $list = (isset($body['Traces']) && !empty($body['Traces'])) ? $body['Traces'] : [];
+
+        $data = [
+            'name' => $name,
+            'phone' => $phone,
+            'list' => $list
+        ];
+
+        return $data;
+    }
+}
+
